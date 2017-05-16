@@ -2,8 +2,8 @@
 <html>
 <head>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src="./js/plot.js" ></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="./js/plot.js" ></script>
   <link rel="stylesheet" href="./css/gui.css">
 </head>
 <body>
@@ -17,5 +17,42 @@
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
 var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,600);
+run_motor = function(run_yn){
+    if (run_yn){
+        command_vel = desired_speed;
+        if (! motor_run){
+            motor_run = true;
+            var timer;
+            timer = setInterval(function(){
+                actual_vel = pole*actual_vel + desired_accel*step_size*0.001;
+                // var incr = (1-pole)*(Math.abs(command_vel - actual_vel));
+                // if (command_vel < actual_vel){
+                //    actual_vel = actual_vel - incr;
+                // }else{
+                //     actual_vel = actual_vel + incr;
+                // }
+                var move_size = actual_vel*0.001*step_size;
+                blade_angle = blade_angle+ move_size;
+                blade_angle = blade_angle%360;
+                var blur_amount = Math.min(Math.abs(actual_vel/max_blur_vel),1.0);
+                blades.style("opacity",1-0.9*blur_amount);
+                blur.style("opacity",0.1*blur_amount);
+                motor_group.attr("transform", "translate("+OFFSET_X+","+OFFSET_Y+") rotate("+blade_angle+")");
+                if (! motor_run){
+                    clearInterval(timer);
+                }
+                $("#curr_vel").html(actual_vel.toPrecision(4));
+                plot.step(actual_vel);
+                if (command_vel ==0 && Math.abs(actual_vel)< 0.001){
+                    motor_run = false;
+                    $("#curr_vel").html("0.0");
+                }
+            },step_size);
+        }
+    }
+    else{
+        command_vel = 0;
+    }
+}
 </script>
 </html>
