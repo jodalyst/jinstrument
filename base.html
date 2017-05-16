@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="./js/plot.js" ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="./css/gui.css">
+</head>
+<body>
+  <div id="motor_box"></div>
+  <div class="sbs">
+    <div class="plot_title"><h4>Example Plot</h4></div>
+    <div id="plotbox" class="chart"></div>
+  </div>
+</body>
+<script>
+var PLOT_HEIGHT = 200;
+var PLOT_WIDTH = 300;
+var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,600);
+</script>
+</html>
