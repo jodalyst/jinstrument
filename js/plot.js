@@ -86,13 +86,23 @@ function LWChart(div_id,color,y_range,height,width,vals){
         };
     this.setup();
     //console.log(this.div_id);
-    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC2\" >");
+    $("#"+this.div_id).prepend("<div class ='v_button_container' id = \""+this.div_id+"BC2\" >");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button><br>");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"RS\">RS</button><br>");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button><br>");
-    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC1\" >");
+    $("#"+this.div_id).prepend("<div class ='v_button_container' id = \""+this.div_id+"BC1\" >");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button><br>");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button><br>");
+    $("#"+this.div_id).append("<div class ='v_button_container' id = \""+this.div_id+"BC3\" >");
+
+    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button><br>");
+    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button><br>");
+    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button><br>");
+
+    $("#"+this.div_id).append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button><br>");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button><br>");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button><br>");
     this.step = function(value){
             this.data.push(value);
             this.trace.attr("d",this.line).attr("transform",null).transition().duration(2).ease("linear").attr("transform","translate("+this.x(-1)+",0)");

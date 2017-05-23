@@ -99,7 +99,7 @@ svg {
     outline: 0;
 }
 
-.button_container{
+.v_button_container{
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -111,6 +111,19 @@ svg {
     vertical-align:middle;
 }
 
+.h_button_container{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    display: inline-block;
+    float: left;
+    vertical-align:middle;
+}
+
+
 .y_axis {
         position: absolute;
         top: 0;
@@ -120,6 +133,7 @@ svg {
 .chart {
     position: relative;
     left: 0px;
+    margin: 10px;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
