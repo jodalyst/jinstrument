@@ -3,7 +3,7 @@ $(document).on("click", ".scaler",function(){
     //var parent = plot_handlers[$(this).parent().parent().attr("id")];
     var parent = plot;
     //console.log($(this).attr("id"));
-    var parid = $(this).parent().parent().attr("id")
+    var parid = $(this).parent().parent().attr("id").replace("top","")
     switch ($(this).attr("id")){
         case parid+"VM":
             var parent_range = parent.y_range[1] - parent.y_range[0];
@@ -68,15 +68,16 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.div_id = div_id;
     this.color = color;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
+    this.x_range_orig = vals;
     this.y_range = y_range;
     this.vals = vals;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
     this.data = d3.range(this.vals).map(function() { return 0; });
     this.height = height - this.margin.top - this.margin.bottom;
     this.width = width - this.margin.right - this.margin.left;
+    this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
+    this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bottom\">");
     this.setup = function(){
-        this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
-        this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bottom\">");
         this.chart = d3.select("#"+this.div_id+"top").append("svg")
         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
         this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
@@ -110,12 +111,13 @@ function LWChart(div_id,color,y_range,height,width,vals){
     $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC1\" >");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button>");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button>");
-    $("#"+this.div_id+"top").append("<div class ='t_button_container' id = \""+this.div_id+"BC3\" >");
+    /* 
+     $("#"+this.div_id+"top").append("<div class ='t_button_container' id = \""+this.div_id+"BC3\" >");
 
     $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"TP\">TZ+</button>");
     $("#"+this.div_id+"BC3").append("<button class='trigger' id=\""+this.div_id+"TONOFF\">TRIGGER</button>");
     $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"TM\">TZ-</button>");
-
+    */
     $("#"+this.div_id+"bottom").append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
