@@ -104,22 +104,22 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.setup();
     //console.log(this.div_id);
     $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC2\" >");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button><br>");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VRS\">RS</button><br>");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button><br>");
+    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button>");
+    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VRS\">RS</button>");
+    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button>");
     $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC1\" >");
-    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button><br>");
-    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button><br>");
-    $("#"+this.div_id+"top").append("<div class ='v_button_container' id = \""+this.div_id+"BC3\" >");
+    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button>");
+    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button>");
+    $("#"+this.div_id+"top").append("<div class ='t_button_container' id = \""+this.div_id+"BC3\" >");
 
-    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button><br>");
-    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button><br>");
-    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button><br>");
+    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"TP\">TZ+</button>");
+    $("#"+this.div_id+"BC3").append("<button class='trigger' id=\""+this.div_id+"TONOFF\">TRIGGER</button>");
+    $("#"+this.div_id+"BC3").append("<button class='scaler' id=\""+this.div_id+"TM\">TZ-</button>");
 
     $("#"+this.div_id+"bottom").append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button><br>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button><br>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button><br>");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
+    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.step = function(value){
             this.data.push(value);
             this.trace.attr("d",this.line).attr("transform",null).transition().duration(2).ease("linear").attr("transform","translate("+this.x(-1)+",0)");

@@ -70,7 +70,7 @@ svg {
       stroke-width: 0;
 }
 .scaler {
-    margin-left: 5px;
+    margin: 3px;
     font-size: 10px;
     padding:0px;
     width: 20px;
@@ -82,6 +82,41 @@ svg {
     -webkit-box-shadow: inset 0px -5px 10px #dfdfdf;
     box-shadow:         inset 0px -5px 10px #dfdfdf;
 }
+
+
+.trigger {
+    margin-left: 5px;
+    font-size: 10px;
+    padding:0px;
+    width: 100%;
+    background-color:#FFFFFF;
+    border-radius:10px;
+    border: 1px solid;
+    border-color: #dfdfdf;
+    -moz-box-shadow:    inset 0px -5px 10px #dfdfdf;
+    -webkit-box-shadow: inset 0px -5px 10px #dfdfdf;
+    box-shadow:         inset 0px -5px 10px #dfdfdf;
+}
+
+.trigger:active{
+    background-color:#00ff1e;
+    -moz-box-shadow:    inset 0px -5px 10px #207e2b;
+    -webkit-box-shadow: inset 0px -5px 10px #207e2b;
+    box-shadow:         inset 0px -5px 10px #207e2b;
+}
+
+.trigger:hover{
+    background-color:#dfdfdf;
+    -moz-box-shadow:    inset 0px -5px 10px #c5c5c5;
+    -webkit-box-shadow: inset 0px -5px 10px #c5c5c5;
+    box-shadow:         inset 0px -5px 10px #c5c5c5;
+}
+.trigger:focus{
+    outline: 0;
+}
+
+
+
 .scaler:active{
     background-color:#00ff1e;
     -moz-box-shadow:    inset 0px -5px 10px #207e2b;
@@ -103,11 +138,18 @@ svg {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
-    display: inline-block;
-    float: left;
+}
+
+.t_button_container{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     vertical-align:middle;
 }
 
@@ -118,7 +160,6 @@ svg {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    display: inline-block;
     float: left;
     vertical-align:middle;
 }
