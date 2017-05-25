@@ -19,7 +19,8 @@ var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
 var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,60);
 timer = setInterval(function(){
-      plot.step(100*Math.random());
+      plot.step(50);
+      //plot.step(100*Math.random());
     }, 50);
 </script>
 </html>
