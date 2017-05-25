@@ -130,7 +130,8 @@ function LWChart(div_id,color,y_range,height,width,vals){
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.step = function(value){
-            this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
+            //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
+            this.trace.attr("d",this.line).attr("transform",null);
             this.data.push(value);
             this.data.shift();
     };
