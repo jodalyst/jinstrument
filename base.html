@@ -18,9 +18,19 @@
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
 var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,60);
+var state = 0;
 timer = setInterval(function(){
-      plot.step(50);
+      if (state == 0 || state == 1){
+        plot.step(50);
+      }else{
+        plot.step(40);
+      }
+      state = state+1;
+      if (state == 4){
+        state = 0;
+      } 
+      //plot.step(50);
       //plot.step(100*Math.random());
-    }, 50);
+    }, 250);
 </script>
 </html>

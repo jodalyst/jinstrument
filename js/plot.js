@@ -28,12 +28,15 @@ $(document).on("click", ".scaler",function(){
             if (parent.vals >4){
                 parent.vals = Math.floor(parent.vals/2);
             }
+            parent.xchange = true;
             break;
         case parid+"HP":
             parent.vals = parent.vals*2;
+            parent.xchange = true;
             break;
         case parid+"HRS":
             parent.vals =parent.vals_orig;
+            parent.xchange = true;
             break;
         case parid+"OD":
             var diff = parent.y_range[1] - parent.y_range[0];
@@ -71,6 +74,7 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.vals_orig = vals;
     this.y_range = y_range;
     this.vals = vals;
+    this.xchange = false;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
     this.data = d3.range(this.vals).map(function() { return 0; });
     this.height = height - this.margin.top - this.margin.bottom;
@@ -78,13 +82,14 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
     this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bot\">");
     this.setup = function(){
-        if (this.data.length != this.vals){
+        if (this.xchange){
+            this.xchange = false;
             if (this.vals> this.data.length){//increasing amount
                 var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
                 this.data = tempdata.concat(this.data);
             }else{
                 var to_remove = this.data.length-this.vals;
-                this.data = this.data.slice(this.data.length-to_remove, to_remove); 
+                this.data = this.data.slice(this.data.length-to_remove-1, this.data.length);
             }
         }
         //this.data = d3.range(this.vals).map(function() { return 0; });
@@ -125,9 +130,9 @@ function LWChart(div_id,color,y_range,height,width,vals){
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.step = function(value){
+            this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             this.data.push(value);
             this.data.shift();
-            this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
     };
     this.update = function(){
         d3.select("#svg_for_"+this.div_id).remove();
