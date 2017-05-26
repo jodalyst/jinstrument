@@ -26,7 +26,8 @@ $(document).on("click", ".scaler",function(){
             break;
         case parid+"HM":
             if (parent.vals >4){
-                parent.vals = Math.floor(parent.vals/2);
+                console.log(parent.vals/2);
+                parent.vals = Math.round(parent.vals/2);
             }
             parent.xchange = true;
             break;
@@ -35,6 +36,7 @@ $(document).on("click", ".scaler",function(){
             parent.xchange = true;
             break;
         case parid+"HRS":
+            console.log(parent.vals_orig);
             parent.vals =parent.vals_orig;
             parent.xchange = true;
             break;
@@ -51,6 +53,7 @@ $(document).on("click", ".scaler",function(){
             parent.y_range[0] = parent.y_range[0]-tp;
             break;
     }
+    console.log(parent.vals);
     parent.update();
 });
 
@@ -83,13 +86,20 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bot\">");
     this.setup = function(){
         if (this.xchange){
+            console.log(this.vals);
+            console.log(this.data.length);
             this.xchange = false;
             if (this.vals> this.data.length){//increasing amount
+                console.log("increasing");
                 var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
                 this.data = tempdata.concat(this.data);
-            }else{
+            }else if (this.vals< this.data.length){
+                console.log("decreasing");
                 var to_remove = this.data.length-this.vals;
-                this.data = this.data.slice(this.data.length-to_remove-1, this.data.length);
+                console.log(Math.max(0,this.data.length-to_remove-1));
+                console.log(this.data.length);
+                this.data = this.data.slice(Math.max(0,this.data.length-to_remove));
+                console.log(this.data.length);
             }
         }
         //this.data = d3.range(this.vals).map(function() { return 0; });
