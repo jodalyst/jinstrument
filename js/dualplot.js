@@ -1,12 +1,7 @@
 $(document).on("click", ".scaler",function(){
-    //var parent = $($(this).parent().parent().attr("id"));
-    //var parent = plot_handlers[$(this).parent().parent().attr("id")];
     var parent = plot;
-    //console.log($(this).attr("id"));
     var tempid = $(this).parent().parent().attr("id");
     var parid = tempid.substr(0,tempid.length-3);
-    console.log(parid);
-    console.log($(this).attr("id"));
     //var parid = $(this).parent().parent().attr("id").replace("top","")
     switch ($(this).attr("id")){
         case parid+"VM":
@@ -26,7 +21,6 @@ $(document).on("click", ".scaler",function(){
             break;
         case parid+"HM":
             if (parent.vals >4){
-                console.log(parent.vals/2);
                 parent.vals = Math.round(parent.vals/2);
             }
             parent.xchange = true;
@@ -36,7 +30,6 @@ $(document).on("click", ".scaler",function(){
             parent.xchange = true;
             break;
         case parid+"HRS":
-            console.log(parent.vals_orig);
             parent.vals =parent.vals_orig;
             parent.xchange = true;
             break;
@@ -53,7 +46,6 @@ $(document).on("click", ".scaler",function(){
             parent.y_range[0] = parent.y_range[0]-tp;
             break;
     }
-    console.log(parent.vals);
     parent.update();
 });
 
@@ -91,16 +83,12 @@ function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
     this.setup = function(){
         if (this.xchange){
             this.xchange = false;
-            console.log(this.vals);
-            console.log(this.data[0]);
             if (this.vals> this.data[0].length){//increasing amount
-                console.log("increasing");
                 for (var i = 0; i<this.num_traces;i++){
                     var tempdata = d3.range(this.vals-this.data[i].length).map(function() { return 0; });
                     this.data[i] = tempdata.concat(this.data[i]);
                 }
             }else if (this.vals< this.data[0].length){
-                console.log("decreasing");
                 var to_remove = this.data[0].length-this.vals;
                 for(var i =0; i<this.num_traces; i++){
                     this.data[i] = this.data[i].slice(-this.vals);
@@ -126,14 +114,9 @@ function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_grid);
         this.line = d3.svg.line().x(function(d, i) { return this.x(i)+this.margin.left; }.bind(this)).
         y(function(d, i) { return this.y(d)+this.margin.top; }.bind(this));
-        //this.clip_id = "clipper_"+this.div_id;
-        //this.clipper = this.chart.append("clipPath").attr("id", this.clip_id)
-        //.append("rect").attr("x",this.margin.left).attr("y",this.margin.top)
-        //.attr("width",this.width).attr("height",this.height);
         this.traces = [];
         for (var i=0; i<this.num_traces; i++){
-            console.log(this.colors[i]);
-            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("stroke", this.colors[i]));
+            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("stroke",this.colors[i]));
         }
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
@@ -151,7 +134,6 @@ function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
-            console.log(this.data[0]);
             for (var i=0; i<values.length; i++){
                 this.traces[i].attr("d",this.line).attr("transform",null);
                 this.data[i].push(values[i]);

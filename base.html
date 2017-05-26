@@ -7,20 +7,26 @@
   <link rel="stylesheet" href="./css/gui.css">
 </head>
 <body>
-<p>Signal below is comprised of random values from 0 to 100, and plot is updated every 50ms on <tt>setInterval</tt> type timer.  The left-side adjustments control y-scaling and offset.</p>
-  <div id="motor_box"></div>
-  <div class="sbs">
-    <div class="plot_title">Example Plot</div>
+<p>Signal below is based on mouse cursor position on the page and is update every 10ms on <tt>setInterval</tt> type timer.  The left-side adjustments control y-scaling and offset.</p>
+  <div >
+    <div class="plot_title">Mouse Position(X=Red, Y=Blue)</div>
     <div id="plotbox"></div>
   </div>
 </body>
 <script>
-var PLOT_HEIGHT = 200;
-var PLOT_WIDTH = 300;
-var plot = new LWChart("plotbox",[0,100],PLOT_HEIGHT,PLOT_WIDTH,60,2,["#FF0000","#0000FF"]);
+
+var mouseX, mouseY;
+$(document).mousemove(function(e){
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+});
+
+var PLOT_HEIGHT = 500;
+var PLOT_WIDTH = 400;
+var plot = new LWChart("plotbox",[0,1000],PLOT_HEIGHT,PLOT_WIDTH,60,2,["red","blue"]);
 var state = 0;
 timer = setInterval(function(){
-      if (state == 0 || state == 1){
+      /*if (state == 0 || state == 1){
         plot.step([50,20]);
       }else{
         plot.step([40,24]);
@@ -28,9 +34,10 @@ timer = setInterval(function(){
       state = state+1;
       if (state == 4){
         state = 0;
-      } 
+      }*/
+      plot.step([mouseX,mouseY]);
       //plot.step(50);
       //plot.step(100*Math.random());
-    }, 500);
+    }, 10);
 </script>
 </html>

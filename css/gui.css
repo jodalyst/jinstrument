@@ -23,7 +23,6 @@ svg {
 }
 .line {
     fill: none;
-    stroke: #F00;
     stroke-width: 1.5px;
 }
 .axis path,
