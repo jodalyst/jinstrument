@@ -3,7 +3,7 @@
 <head>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-  <script src="./js/plot.js" ></script>
+  <script src="./js/dualplot.js" ></script>
   <link rel="stylesheet" href="./css/gui.css">
 </head>
 <body>
@@ -17,13 +17,13 @@
 <script>
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
-var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,60);
+var plot = new LWChart("plotbox","red",[0,100],PLOT_HEIGHT,PLOT_WIDTH,60,2);
 var state = 0;
 timer = setInterval(function(){
       if (state == 0 || state == 1){
-        plot.step(50);
+        plot.step([50,20]);
       }else{
-        plot.step(40);
+        plot.step([40,24]);
       }
       state = state+1;
       if (state == 4){

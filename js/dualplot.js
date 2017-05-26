@@ -70,36 +70,39 @@ function plot_generate(name,min,max,datapoints){
     plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
 }
 
-function LWChart(div_id,color,y_range,height,width,vals){
+function LWChart(div_id,color,y_range,height,width,vals,num_traces){
     this.div_id = div_id;
     this.color = color;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = vals;
     this.y_range = y_range;
+    this.num_traces = num_traces;
     this.vals = vals;
     this.xchange = false;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
-    this.data = d3.range(this.vals).map(function() { return 0; });
+    this.data = [];
+    for (var i = 0; i<this.num_traces; i++){
+        this.data.push(d3.range(this.vals).map(function() { return 0; }));
+    }
     this.height = height - this.margin.top - this.margin.bottom;
     this.width = width - this.margin.right - this.margin.left;
     this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
     this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bot\">");
     this.setup = function(){
         if (this.xchange){
-            console.log(this.vals);
-            console.log(this.data.length);
             this.xchange = false;
-            if (this.vals> this.data.length){//increasing amount
+            if (this.vals> this.data[0].length){//increasing amount
                 console.log("increasing");
-                var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
-                this.data = tempdata.concat(this.data);
-            }else if (this.vals< this.data.length){
+                for (var i = 0; i<this.num_traces;i++){
+                    var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
+                    this.data[i] = tempdata.concat(this.data[i]);
+                }
+            }else if (this.vals< this.data[0].length){
                 console.log("decreasing");
-                var to_remove = this.data.length-this.vals;
-                console.log(Math.max(0,this.data.length-to_remove-1));
-                console.log(this.data.length);
-                this.data = this.data.slice(Math.max(0,this.data.length-to_remove));
-                console.log(this.data.length);
+                var to_remove = this.data[0].length-this.vals;
+                for(var i =0; i<this.num_traces; i++){
+                    this.data[i] = this.data[i].slice(Math.max(0,this.data[i].length-to_remove));
+                }
             }
         }
         //this.data = d3.range(this.vals).map(function() { return 0; });
@@ -124,8 +127,11 @@ function LWChart(div_id,color,y_range,height,width,vals){
         this.clipper = this.chart.append("clipPath").attr("id", this.clip_id)
         .append("rect").attr("x",this.margin.left).attr("y",this.margin.top)
         .attr("width",this.width).attr("height",this.height);
-        this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line")
-        .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
+        this.traces = [];
+        for (var i=0; i<this.num_traces; i++){
+            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")"));
+        }
+        //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
     this.setup();
     $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC2\" >");
@@ -139,11 +145,14 @@ function LWChart(div_id,color,y_range,height,width,vals){
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
-    this.step = function(value){
+    this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
-            this.trace.attr("d",this.line).attr("transform",null);
-            this.data.push(value);
-            this.data.shift();
+            console.log(values);
+            for (var i=0; i<values.length; i++){
+                this.traces[i].attr("d",this.line).attr("transform",null);
+                this.data[i].push(values[i]);
+                this.data[i].shift();
+            }
     };
     this.update = function(){
         d3.select("#svg_for_"+this.div_id).remove();
