@@ -70,9 +70,9 @@ function plot_generate(name,min,max,datapoints){
     plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
 }
 
-function LWChart(div_id,color,y_range,height,width,vals,num_traces){
+function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
     this.div_id = div_id;
-    this.color = color;
+    this.colors = colors;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = vals;
     this.y_range = y_range;
@@ -91,17 +91,19 @@ function LWChart(div_id,color,y_range,height,width,vals,num_traces){
     this.setup = function(){
         if (this.xchange){
             this.xchange = false;
+            console.log(this.vals);
+            console.log(this.data[0]);
             if (this.vals> this.data[0].length){//increasing amount
                 console.log("increasing");
                 for (var i = 0; i<this.num_traces;i++){
-                    var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
+                    var tempdata = d3.range(this.vals-this.data[i].length).map(function() { return 0; });
                     this.data[i] = tempdata.concat(this.data[i]);
                 }
             }else if (this.vals< this.data[0].length){
                 console.log("decreasing");
                 var to_remove = this.data[0].length-this.vals;
                 for(var i =0; i<this.num_traces; i++){
-                    this.data[i] = this.data[i].slice(Math.max(0,this.data[i].length-to_remove));
+                    this.data[i] = this.data[i].slice(-this.vals);
                 }
             }
         }
@@ -129,7 +131,8 @@ function LWChart(div_id,color,y_range,height,width,vals,num_traces){
         .attr("width",this.width).attr("height",this.height);
         this.traces = [];
         for (var i=0; i<this.num_traces; i++){
-            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")"));
+            console.log(this.colors[i]);
+            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")").attr("stroke", this.colors[i]));
         }
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
@@ -147,7 +150,7 @@ function LWChart(div_id,color,y_range,height,width,vals,num_traces){
     $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
-            console.log(values);
+            console.log(this.data[0]);
             for (var i=0; i<values.length; i++){
                 this.traces[i].attr("d",this.line).attr("transform",null);
                 this.data[i].push(values[i]);
