@@ -112,27 +112,28 @@ function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
         this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
         this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
-        this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(20);
+        this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
         this.y_axis = d3.svg.axis().scale(this.y).orient("left").ticks(11);
         this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-this.height, 0, 0).tickFormat("");
         this.y_grid = d3.svg.axis().scale(this.y).orient("left").ticks(11).tickSize(-this.width, 0, 0).tickFormat("");
         this.chart.append("g").attr("transform","translate("+this.margin.left +","+ this.margin.top + ")");
         this.chart.append("g").attr("class", "x axis")
-        .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_axis);
+        .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_axis).selectAll("text")
+        .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
         this.chart.append("g").attr("class", "y axis").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_axis);
         this.chart.append("g").attr("class", "grid")
         .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_grid);
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_grid);
         this.line = d3.svg.line().x(function(d, i) { return this.x(i)+this.margin.left; }.bind(this)).
         y(function(d, i) { return this.y(d)+this.margin.top; }.bind(this));
-        this.clip_id = "clipper_"+this.div_id;
-        this.clipper = this.chart.append("clipPath").attr("id", this.clip_id)
-        .append("rect").attr("x",this.margin.left).attr("y",this.margin.top)
-        .attr("width",this.width).attr("height",this.height);
+        //this.clip_id = "clipper_"+this.div_id;
+        //this.clipper = this.chart.append("clipPath").attr("id", this.clip_id)
+        //.append("rect").attr("x",this.margin.left).attr("y",this.margin.top)
+        //.attr("width",this.width).attr("height",this.height);
         this.traces = [];
         for (var i=0; i<this.num_traces; i++){
             console.log(this.colors[i]);
-            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")").attr("stroke", this.colors[i]));
+            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("stroke", this.colors[i]));
         }
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
