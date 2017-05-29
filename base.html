@@ -21,23 +21,12 @@ $(document).mousemove(function(e){
         mouseY = e.pageY;
 });
 
-var PLOT_HEIGHT = 500;
-var PLOT_WIDTH = 400;
+var PLOT_HEIGHT = 200;
+var PLOT_WIDTH = 300;
 var plot = new LWChart("plotbox",[0,1000],PLOT_HEIGHT,PLOT_WIDTH,60,2,["red","blue"]);
 var state = 0;
 timer = setInterval(function(){
-      /*if (state == 0 || state == 1){
-        plot.step([50,20]);
-      }else{
-        plot.step([40,24]);
-      }
-      state = state+1;
-      if (state == 4){
-        state = 0;
-      }*/
       plot.step([mouseX,mouseY]);
-      //plot.step(50);
-      //plot.step(100*Math.random());
     }, 10);
 </script>
 </html>
