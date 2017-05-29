@@ -23,7 +23,7 @@ $(document).mousemove(function(e){
 
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
-var plot = new LWChart("plotbox",[0,1000],PLOT_HEIGHT,PLOT_WIDTH,60,2,["red","blue"]);
+var plot = new LWChart("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"]);
 var state = 0;
 timer = setInterval(function(){
       plot.step([mouseX,mouseY]);

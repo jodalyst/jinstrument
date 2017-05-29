@@ -49,6 +49,8 @@ $(document).on("click", ".scaler",function(){
     parent.update();
 });
 
+
+/*not working right now (5/28/2017
 function plot_generate(name,min,max,datapoints){
     var newb = document.createElement("div"); //create div
     $(newb).addClass("sbs"); //make it sbs
@@ -61,15 +63,16 @@ function plot_generate(name,min,max,datapoints){
     $(newplot).appendTo($(newb)); //add into sbs div
     plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
 }
+*/
 
-function LWChart(div_id,y_range,height,width,vals,num_traces,colors){
+function LWChart(div_id,width,height,x_range,y_range,num_traces,colors){
     this.div_id = div_id;
     this.colors = colors;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
-    this.vals_orig = vals;
+    this.vals_orig = x_range;
     this.y_range = y_range;
     this.num_traces = num_traces;
-    this.vals = vals;
+    this.vals = x_range;
     this.xchange = false;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
     this.data = [];
