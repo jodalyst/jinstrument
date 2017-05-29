@@ -40,6 +40,7 @@ with a body of:
 <body>
   <div id="plotbox"></div>
 </body>
+```
 
 And then the following script in the document:
 
