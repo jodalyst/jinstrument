@@ -65,44 +65,55 @@ function plot_generate(name,min,max,datapoints){
 }
 */
 
-function LWChart(div_id,width,height,x_range,y_range,num_traces,colors){
+/*MAJOR QUESTION HERE?  HOW DO WE (AND DO WE AT ALL??) WANT TO HANDLE X RANGE ADJUSTEMENTS?  LINEARLY OUT FROM CENTER POINT?  NOT AT ALL?
+*/
+
+
+//data structure this.data must be an associtive array
+function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, type='line', x_scale = 'linear', y_scale = 'linear', update_function = function(x){return x}){
     this.div_id = div_id;
-    this.colors = colors;
+    this.color = color;
+    this.type = type;
+    this.x_scale = x_scale;
+    this.y_scale = y_scale; 
+    this.update_function = update_function;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = x_range;
     this.y_range = y_range;
-    this.num_traces = num_traces;
-    this.vals = x_range;
+    this.x_range = x_range;
+    this.vals = vals;
     this.xchange = false;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
-    this.data = [];
-    for (var i = 0; i<this.num_traces; i++){
-        this.data.push(d3.range(this.vals).map(function() { return 0; }));
-    }
+    
+    this.data = d3.range(this.vals).map(function() { return 0; });
     this.height = height - this.margin.top - this.margin.bottom;
     this.width = width - this.margin.right - this.margin.left;
     this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
     this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bot\">");
-    this.setup = function(){
+    this.setup = function(){ //discontinue this for now....
         if (this.xchange){
             this.xchange = false;
-            if (this.vals> this.data[0].length){//increasing amount
-                for (var i = 0; i<this.num_traces;i++){
-                    var tempdata = d3.range(this.vals-this.data[i].length).map(function() { return 0; });
-                    this.data[i] = tempdata.concat(this.data[i]);
-                }
-            }else if (this.vals< this.data[0].length){
-                var to_remove = this.data[0].length-this.vals;
-                for(var i =0; i<this.num_traces; i++){
-                    this.data[i] = this.data[i].slice(-this.vals);
-                }
+            if (this.vals> this.data.length){//increasing amount
+                var tempdata = d3.range(this.vals-this.data.length).map(function() { return 0; });
+                this.data = tempdata.concat(this.data);
+            }else if (this.vals< this.data.length){
+                var to_remove = this.data.length-this.vals;
+                this.data = this.data.slice(-this.vals);
             }
         }
         //this.data = d3.range(this.vals).map(function() { return 0; });
         this.chart = d3.select("#"+this.div_id+"top").append("svg")
         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
-        this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
-        this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
+        if (this.x_scale=="linear"){ 
+            this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
+        }else if(this.x_scale == "log"){
+            this.y = d3.scale.log().domain([0,this.vals-1]).range([0,this.width]);
+        }
+        if (this.y_scale=="linear"){
+            this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
+        }else if(this.y_scale == "log"){
+            this.y = d3.scale.log().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
+        }
         this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
         this.y_axis = d3.svg.axis().scale(this.y).orient("left").ticks(11);
         this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-this.height, 0, 0).tickFormat("");
@@ -131,10 +142,13 @@ function LWChart(div_id,width,height,x_range,y_range,num_traces,colors){
     $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC1\" >");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button>");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button>");
-    $("#"+this.div_id+"bot").append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
+    //$("#"+this.div_id+"bot").append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
+    //$("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
+    //$("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
+    //$("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
+    this.value_update = function(x,y){
+
+    };    
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             for (var i=0; i<values.length; i++){
