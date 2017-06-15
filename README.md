@@ -1,13 +1,14 @@
-Introduction
+# Introduction
 =========
 
 This is a packaging-up and development of the plot window used in 6302View. The ultimate goal of this project is to package the plotting window object more properly into a modular js library for easier deployment.  In addition the following features to the 
 
 
-## Methods ##
+## Methods
 
+###`Time_Series`
 ```
-LWChart(div_id,width,height,x_range,y_range,num_traces,colors)
+Time_Series(div_id,width,height,x_range,y_range,num_traces,colors)
 ```
 
 There are a number of inputs to this function, all of which must be specified (no defaults):
@@ -31,7 +32,7 @@ An example set of supporting code would be:
 ```
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-<script src="./js/dualplot.js" ></script>
+<script src="./js/time_series.js" ></script>
 <link rel="stylesheet" href="./css/gui.css">
 ```
 
@@ -45,7 +46,7 @@ with a body of:
 And then the following script in the document:
 
 ```
-var plot = new LWChart("plotbox",300, 200,60,[0,1000],2,["red","blue"]);
+var plot = new Time_Series("plotbox",300, 200,60,[0,1000],2,["red","blue"]);
 ```
 
 Followed by some sort of call to `step` with appropriate data such as:
@@ -54,9 +55,20 @@ Followed by some sort of call to `step` with appropriate data such as:
 plot.step([2,3]);
 ```
 
+###`Time_Parallel`
 
+###`Numerical_Display`
 
+###`Toggle`
 
-##Alternator
+###`Slider`
 
 The basic idea is an object that will link command sliders to Alternatin
+
+###`Joystick`
+
+Things it needs:
+    
+    * X-Y Sensitivity (must have some sort of event it triggers)...need to think about how to generalize triggering of async events in general
+    * Center-Return/Not-Center-Return Option
+
