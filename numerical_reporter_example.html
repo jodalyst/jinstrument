@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="./css/gui.css">
 </head>
 <body>
-<p>Signal below is based on mouse cursor position on the page and is update every 10ms on <tt>setInterval</tt> type timer.  The left-side adjustments control y-scaling and offset.</p>
-  <div >
-    <div id="x_pos"></div>
-    <div id="y_pos"></div>
+<p>Numbers below are based on mouse position (clipped at certain values).</p>
+  <div id="pos_1"></div>
+<p>The modules should be responsive as shown below:
+  <div id="my_num_row">
   </div>
 </body>
 <script>
@@ -21,12 +21,28 @@ $(document).mousemove(function(e){
         mouseY = e.pageY;
 });
 
-var reporter_x = new Numerical_Reporter("x_pos","X Position",[-100,500],"red","black");
-var reporter_y = new Numerical_Reporter("y_pos","Y Position",[50,250],"yellow","blue");
+var reporter_x = new Numerical_Reporter("pos_1","X Position",[-100,500],"red","black");
+var reporter_y = new Numerical_Reporter("pos_1","Y Position",[50,250],"yellow","blue");
+var reporter_x2 = new Numerical_Reporter("my_num_row","X Position",[,],"black","gray");
+var reporter_y2 = new Numerical_Reporter("my_num_row","Y Position",[,],"orange","red");
 
 timer = setInterval(function(){
     reporter_x.step(mouseX);
     reporter_y.step(mouseY);  
-    }, 1000);
+    reporter_x2.step(mouseX);
+    reporter_y2.step(mouseY);
+    }, 100);
 </script>
+<style>
+
+#my_num_row{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    vertical-align:middle;
+}
+
 </html>

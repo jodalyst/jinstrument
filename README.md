@@ -59,6 +59,53 @@ plot.step([2,3]);
 
 ### `Numerical_Display`
 
+Bring in:
+
+```
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="./js/numerical_display.js" ></script>
+<link rel="stylesheet" href="./css/gui.css">
+```
+
+and with a body of :
+
+```
+<body>
+  <div id="pos_1"></div>
+</body>
+```
+
+and then the following script in teh document:
+
+```
+var reporter_x = new Numerical_Reporter("pos_1","X Position",[-100,500],"red","black");
+var reporter_y = new Numerical_Reporter("pos_1","Y Position",[50,250],"yellow","blue");
+```
+
+You can then simply update numbers in it like so:
+
+```
+reporter_x.step(Math.random());
+reporter_y.step(Math.random());  
+```
+
+#### Arguments:
+
+```
+function Numerical_Reporter(div_id,title,range,color,bg_color){
+```
+
+
+* `div_id`: The DOM div where you want the thing to live
+* `title`: The title you'd like to show up for your plot
+* `range`: If you'd like to limit the displayed numerical range use this. It needs an array of `[low_limit,high_limit]`.  If you'd like to avoid using this, specify a `range` of `[,]`
+* `color`: Color of the displayed font
+* `bg_color`: Background color of the displayed font.
+
+
+
+
 ### `Toggle`
 
 ### `Slider`

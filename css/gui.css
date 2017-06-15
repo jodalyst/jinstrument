@@ -39,11 +39,23 @@ svg {
     font-size: 18px;
 }
 
+.number_holder{
+    margin: 5px;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    vertical-align:middle;
+}
+
 .number_title{
     margin-top: 10px;
     text-align: center;
     font-weight: bold;
     font-size: 18px;
+    width:100px;
 }
 
 .reported_number{
