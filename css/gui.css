@@ -36,8 +36,25 @@ svg {
     margin-top: 10px;
     text-align: center;
     font-weight: bold;
-    font-size: 28px;
+    font-size: 18px;
 }
+
+.number_title{
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.reported_number{
+    margin-top: 10px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    width: 100px;
+}
+
 .param_title{
     margin-top: 10px;
     text-align: center;
