@@ -4,9 +4,9 @@
 This is a packaging-up and development of the plot window used in 6302View. The ultimate goal of this project is to package the plotting window object more properly into a modular js library for easier deployment.  In addition the following features to the 
 
 
-## Methods
+## Methods/Objects
 
-###`Time_Series`
+### Time_Series
 ```
 Time_Series(div_id,width,height,x_range,y_range,num_traces,colors)
 ```
@@ -61,11 +61,11 @@ plot.step([2,3]);
 
 ### Toggle
 
-###Slider
+### `Slider`
 
 The basic idea is an object that will link command sliders to Alternatin
 
-###Joystick
+### Joystick
 
 Things it needs:
     
