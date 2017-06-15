@@ -6,7 +6,7 @@ This is a packaging-up and development of the plot window used in 6302View. The 
 
 ## Methods/Objects
 
-### Time_Series
+### `Time_Series`
 ```
 Time_Series(div_id,width,height,x_range,y_range,num_traces,colors)
 ```
@@ -55,17 +55,17 @@ Followed by some sort of call to `step` with appropriate data such as:
 plot.step([2,3]);
 ```
 
-### Time_Parallel
+### `Time_Parallel`
 
-### Numerical_Display
+### `Numerical_Display`
 
-### Toggle
+### `Toggle`
 
 ### `Slider`
 
 The basic idea is an object that will link command sliders to Alternatin
 
-### Joystick
+### `Joystick`
 
 Things it needs:
     
