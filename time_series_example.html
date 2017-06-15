@@ -5,6 +5,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
   <script src="./js/time_series.js" ></script>
   <link rel="stylesheet" href="./css/gui.css">
+
+
 </head>
 <body>
 <p>Signal below is based on mouse cursor position on the page and is update every 10ms on <tt>setInterval</tt> type timer.  The left-side adjustments control y-scaling and offset.</p>
@@ -13,8 +15,8 @@
     <div id="plotbox"></div>
   </div>
 </body>
-<script>
 
+<script>
 var mouseX, mouseY;
 $(document).mousemove(function(e){
         mouseX = e.pageX;
@@ -23,10 +25,13 @@ $(document).mousemove(function(e){
 
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
-var plot = new Time_Series("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"]);
+var plot;
+window.onload = function(){plot = new Time_Series("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"]);
+}
 var state = 0;
 timer = setInterval(function(){
       plot.step([mouseX,mouseY]);
     }, 10);
 </script>
+
 </html>
