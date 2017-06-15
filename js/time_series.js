@@ -65,7 +65,7 @@ function plot_generate(name,min,max,datapoints){
 }
 */
 
-function LWChart(div_id,width,height,x_range,y_range,num_traces,colors){
+function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
     this.div_id = div_id;
     this.colors = colors;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.

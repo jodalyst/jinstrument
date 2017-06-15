@@ -56,3 +56,7 @@ plot.step([2,3]);
 
 
 
+
+##Alternator
+
+The basic idea is an object that will link command sliders to Alternatin
