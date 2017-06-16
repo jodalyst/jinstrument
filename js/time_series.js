@@ -65,8 +65,10 @@ function plot_generate(name,min,max,datapoints){
 }
 */
 
-function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
+function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
     this.div_id = div_id;
+    this.unique = unique;
+    this.socket = socket;
     this.colors = colors;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = x_range;
@@ -81,8 +83,9 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
     }
     this.height = height - this.margin.top - this.margin.bottom;
     this.width = width - this.margin.right - this.margin.left;
-    this.top_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"top\">");
-    this.bottom_row = $("#"+this.div_id).append("<div class=\"chart\" id=\""+this.div_id+"bot\">");
+    this.overall = $("#"+this.div_id).append("<div id=\""+this.div_id+this.unique+"_overall\">");
+    this.top_row = $("#"+this.div_id+this.unique+"_overall").append("<div class=\"chart\" id=\""+this.div_id+this.unique+"top\">");
+    this.bottom_row = $("#"+this.div_id+this.unique+"_overall").append("<div class=\"chart\" id=\""+this.div_id+this.unique+"bot\">");
     this.setup = function(){
         if (this.xchange){
             this.xchange = false;
@@ -99,8 +102,8 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
             }
         }
         //this.data = d3.range(this.vals).map(function() { return 0; });
-        this.chart = d3.select("#"+this.div_id+"top").append("svg")
-        .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
+        this.chart = d3.select("#"+this.div_id+this.unique+"top").append("svg")
+        .attr("id","svg_for_"+this.div_id+this.unique).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
         this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
         this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
         this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
@@ -124,17 +127,17 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
     this.setup();
-    $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC2\" >");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button>");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VRS\">RS</button>");
-    $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button>");
-    $("#"+this.div_id+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+"BC1\" >");
-    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button>");
-    $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button>");
-    $("#"+this.div_id+"bot").append("<div class ='h_button_container' id = \""+this.div_id+"BC4\" >");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HM\">Z-</button>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HRS\">RS</button>");
-    $("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
+    $("#"+this.div_id+this.unique+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+this.unique+"BC2\" >");
+    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VP\">Z+</button>");
+    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VRS\">RS</button>");
+    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VM\">Z-</button>");
+    $("#"+this.div_id+this.unique+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+this.unique+"BC1\" >");
+    $("#"+this.div_id+this.unique+"BC1").append("<button class='scaler' id=\""+this.div_id+this.unique+"OI\">O+</button>");
+    $("#"+this.div_id+this.unique+"BC1").append("<button class='scaler' id=\""+this.div_id+this.unique+"OD\">O-</button>");
+    $("#"+this.div_id+this.unique+"bot").append("<div class ='h_button_container' id = \""+this.div_id+this.unique+"BC4\" >");
+    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HM\">Z-</button>");
+    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HRS\">RS</button>");
+    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HP\">Z+</button>");
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             for (var i=0; i<values.length; i++){
@@ -144,8 +147,13 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors){
             }
     };
     this.update = function(){
-        d3.select("#svg_for_"+this.div_id).remove();
+        d3.select("#svg_for_"+this.div_id+this.unique).remove();
         this.setup();
     };
+    if (this.socket != null){
+        this.socket.on("update_"+this.unique,function(values){
+            this.step(values);
+        });
+    }
 };
 
