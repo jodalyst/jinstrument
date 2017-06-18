@@ -48,10 +48,12 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
         this.chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_grid);
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_grid);
+        this.clippy = this.chart.append("defs").append("svg:clipPath").attr("id",div_id+unique+"clip").append("svg:rect").attr("id",div_id+unique+"clipRect").attr("x",margin.left).attr("y",margin.top).attr("width",width).attr("height",height);
+        this.chartBody = this.chart.append("g").attr("clip-path","url(#"+div_id+unique+"clip"+")");
         line = d3.svg.line().x(function(d, i) { return this.x(i)+margin.left; }.bind(this)).y(function(d, i) { return this.y(d)+margin.top; }.bind(this));
         traces = [];
         for (var i=0; i<num_traces; i++){
-            traces.push(chart.append("g").append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
+            traces.push(this.chartBody.append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
         }
         this.chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_axis).selectAll("text")
         .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
