@@ -8,7 +8,7 @@ This is a packaging-up and development of the plot window used in 6302View. The 
 
 ### `Time_Series`
 ```
-Time_Series(div_id,width,height,x_range,y_range,num_traces,colors)
+Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
 ```
 
 There are a number of inputs to this function, all of which must be specified (no defaults):
@@ -20,6 +20,8 @@ There are a number of inputs to this function, all of which must be specified (n
 * `y_range`: Initial y-axis range (two-long array: `[min_y, max_y]`)
 * `num_traces`: Number of traces to plot (integer)
 * `colors`: Colors for plots (array of strings...either hex values (e.g. `#00FF00` for bright green, for example or `green` and other standard D3-colors
+* `unique`: A unique (for the page) identifier for the jinstrument object that is to be generated (can be numbers or letters, but ideally no special characters)
+* `socket`: a socket for connection, updating
 
 There are three methods associated with the chart:
 
