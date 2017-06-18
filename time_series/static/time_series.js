@@ -8,14 +8,16 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     var y_range = y_range;
     var num_traces = num_traces;
     var vals = x_range;
+    var total_height = height;
     var xchange = false;
     var margin = {top: 20, right: 30, bottom: 30, left: 40};
     var data = [];
     for (var i = 0; i<num_traces; i++){
         data.push(d3.range(vals).map(function() { return 0; }));
     }
-    var height = height - margin.top - margin.bottom;
-    var width = width - margin.right - margin.left;
+    var height = total_height - margin.top - margin.bottom;
+    var total_width = width;
+    var width = total_width - margin.right - margin.left;
     var overall = $("#"+div_id).append("<div id=\""+div_id+unique+"_overall\">");
     var top_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"top\">");
     var bottom_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"bot\">");
@@ -36,7 +38,7 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
             }
         }
         this.chart = d3.select("#"+div_id+unique+"top").append("svg")
-        .attr("id","svg_for_"+div_id+unique).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
+        .attr("id","svg_for_"+div_id+unique).attr("width",total_width).attr("height",total_height).attr('style',"display:inline-block;").attr("class", "gsc");
         this.y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
         this.x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
         this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
@@ -44,9 +46,6 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
         this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
         this.y_grid = d3.svg.axis().scale(this.y).orient("left").ticks(11).tickSize(-width, 0, 0).tickFormat("");
         this.chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
-        this.chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_axis).selectAll("text")
-        .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
-        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_axis);
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_grid);
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_grid);
         line = d3.svg.line().x(function(d, i) { return this.x(i)+margin.left; }.bind(this)).y(function(d, i) { return this.y(d)+margin.top; }.bind(this));
@@ -54,6 +53,9 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
         for (var i=0; i<num_traces; i++){
             traces.push(chart.append("g").append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
         }
+        this.chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_axis).selectAll("text")
+        .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
+        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_axis);
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
     draw_plot_region();
