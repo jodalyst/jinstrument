@@ -1,19 +1,3 @@
-
-/*not working right now (5/28/2017
-function plot_generate(name,min,max,datapoints){
-    var newb = document.createElement("div"); //create div
-    $(newb).addClass("sbs"); //make it sbs
-    var newtitle = document.createElement("div"); //make inside div
-    $(newtitle).addClass("plot_title").html(name); //make it title
-    var newplot = document.createElement("div"); //make another div
-    $(newplot).addClass("chart"); //make it a chart
-    $(newplot).prop('id',name); //call it appropriate name
-    $(newtitle).appendTo($(newb)); //add into sbs div
-    $(newplot).appendTo($(newb)); //add into sbs div
-    plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
-}
-*/
-
 function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
     var div_id = div_id;
     var unique = unique;
