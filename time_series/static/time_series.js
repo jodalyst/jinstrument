@@ -66,94 +66,94 @@ function plot_generate(name,min,max,datapoints){
 */
 
 function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
-    this.div_id = div_id;
-    this.unique = unique;
-    this.socket = socket;
-    this.colors = colors;
+    var div_id = div_id;
+    var unique = unique;
+    var socket = socket;
+    var colors = colors;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = x_range;
     this.y_range = y_range;
-    this.num_traces = num_traces;
+    var num_traces = num_traces;
     this.vals = x_range;
-    this.xchange = false;
-    this.margin = {top: 20, right: 30, bottom: 30, left: 40};
-    this.data = [];
-    for (var i = 0; i<this.num_traces; i++){
-        this.data.push(d3.range(this.vals).map(function() { return 0; }));
+    var xchange = false;
+    var margin = {top: 20, right: 30, bottom: 30, left: 40};
+    var data = [];
+    for (var i = 0; i<num_traces; i++){
+        data.push(d3.range(vals).map(function() { return 0; }));
     }
-    this.height = height - this.margin.top - this.margin.bottom;
-    this.width = width - this.margin.right - this.margin.left;
-    this.overall = $("#"+this.div_id).append("<div id=\""+this.div_id+this.unique+"_overall\">");
-    this.top_row = $("#"+this.div_id+this.unique+"_overall").append("<div class=\"chart\" id=\""+this.div_id+this.unique+"top\">");
-    this.bottom_row = $("#"+this.div_id+this.unique+"_overall").append("<div class=\"chart\" id=\""+this.div_id+this.unique+"bot\">");
+    var height = height - margin.top - margin.bottom;
+    var width = width - margin.right - margin.left;
+    var overall = $("#"+div_id).append("<div id=\""+div_id+unique+"_overall\">");
+    var top_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"top\">");
+    var bottom_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"bot\">");
+    var line;
     this.setup = function(){
-        if (this.xchange){
-            this.xchange = false;
-            if (this.vals> this.data[0].length){//increasing amount
-                for (var i = 0; i<this.num_traces;i++){
-                    var tempdata = d3.range(this.vals-this.data[i].length).map(function() { return 0; });
-                    this.data[i] = tempdata.concat(this.data[i]);
+        if (xchange){
+            xchange = false;
+            if (vals> data[0].length){//increasing amount
+                for (var i = 0; i<num_traces;i++){
+                    var tempdata = d3.range(vals-data[i].length).map(function() { return 0; });
+                    data[i] = tempdata.concat(data[i]);
                 }
-            }else if (this.vals< this.data[0].length){
-                var to_remove = this.data[0].length-this.vals;
-                for(var i =0; i<this.num_traces; i++){
-                    this.data[i] = this.data[i].slice(-this.vals);
+            }else if (vals< data[0].length){
+                var to_remove = data[0].length-vals;
+                for(var i =0; i<num_traces; i++){
+                    data[i] = data[i].slice(-vals);
                 }
             }
         }
-        //this.data = d3.range(this.vals).map(function() { return 0; });
-        this.chart = d3.select("#"+this.div_id+this.unique+"top").append("svg")
-        .attr("id","svg_for_"+this.div_id+this.unique).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
-        this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
-        this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
-        this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
-        this.y_axis = d3.svg.axis().scale(this.y).orient("left").ticks(11);
-        this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-this.height, 0, 0).tickFormat("");
-        this.y_grid = d3.svg.axis().scale(this.y).orient("left").ticks(11).tickSize(-this.width, 0, 0).tickFormat("");
-        this.chart.append("g").attr("transform","translate("+this.margin.left +","+ this.margin.top + ")");
-        this.chart.append("g").attr("class", "x axis")
-        .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_axis).selectAll("text")
+        //data = d3.range(vals).map(function() { return 0; });
+        var chart = d3.select("#"+div_id+unique+"top").append("svg")
+        .attr("id","svg_for_"+div_id+unique).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
+        var y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
+        var x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
+        var x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(11);
+        var y_axis = d3.svg.axis().scale(y).orient("left").ticks(11);
+        var x_grid = d3.svg.axis().scale(x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
+        var y_grid = d3.svg.axis().scale(y).orient("left").ticks(11).tickSize(-width, 0, 0).tickFormat("");
+        chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
+        chart.append("g").attr("class", "x axis")
+        .attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_axis).selectAll("text")
         .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
-        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_axis);
-        this.chart.append("g").attr("class", "grid")
-        .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_grid);
-        this.chart.append("g").attr("class", "grid").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_grid);
-        this.line = d3.svg.line().x(function(d, i) { return this.x(i)+this.margin.left; }.bind(this)).
-        y(function(d, i) { return this.y(d)+this.margin.top; }.bind(this));
-        this.traces = [];
-        for (var i=0; i<this.num_traces; i++){
-            this.traces.push(this.chart.append("g").append("path").datum(this.data[i]).attr("class","line").attr("d",this.line).attr("stroke",this.colors[i]));
+        chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(y_axis);
+        chart.append("g").attr("class", "grid")
+        .attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_grid);
+        chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(y_grid);
+        line = d3.svg.line().x(function(d, i) { return x(i)+margin.left; }.bind(this)).
+        y(function(d, i) { return y(d)+margin.top; }.bind(this));
+        traces = [];
+        for (var i=0; i<num_traces; i++){
+            traces.push(chart.append("g").append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
         }
         //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
     };
     this.setup();
-    $("#"+this.div_id+this.unique+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+this.unique+"BC2\" >");
-    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VP\">Z+</button>");
-    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VRS\">RS</button>");
-    $("#"+this.div_id+this.unique+"BC2").append("<button class='scaler' id=\""+this.div_id+this.unique+"VM\">Z-</button>");
-    $("#"+this.div_id+this.unique+"top").prepend("<div class ='v_button_container' id = \""+this.div_id+this.unique+"BC1\" >");
-    $("#"+this.div_id+this.unique+"BC1").append("<button class='scaler' id=\""+this.div_id+this.unique+"OI\">O+</button>");
-    $("#"+this.div_id+this.unique+"BC1").append("<button class='scaler' id=\""+this.div_id+this.unique+"OD\">O-</button>");
-    $("#"+this.div_id+this.unique+"bot").append("<div class ='h_button_container' id = \""+this.div_id+this.unique+"BC4\" >");
-    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HM\">Z-</button>");
-    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HRS\">RS</button>");
-    $("#"+this.div_id+this.unique+"BC4").append("<button class='scaler' id=\""+this.div_id+this.unique+"HP\">Z+</button>");
+    $("#"+div_id+unique+"top").prepend("<div class ='v_button_container' id = \""+div_id+unique+"BC2\" >");
+    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VP\">Z+</button>");
+    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VRS\">RS</button>");
+    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VM\">Z-</button>");
+    $("#"+div_id+unique+"top").prepend("<div class ='v_button_container' id = \""+div_id+unique+"BC1\" >");
+    $("#"+div_id+unique+"BC1").append("<button class='scaler' id=\""+div_id+unique+"OI\">O+</button>");
+    $("#"+div_id+unique+"BC1").append("<button class='scaler' id=\""+div_id+unique+"OD\">O-</button>");
+    $("#"+div_id+unique+"bot").append("<div class ='h_button_container' id = \""+div_id+unique+"BC4\" >");
+    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HM\">Z-</button>");
+    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HRS\">RS</button>");
+    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HP\">Z+</button>");
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             for (var i=0; i<values.length; i++){
-                this.traces[i].attr("d",this.line).attr("transform",null);
-                this.data[i].push(values[i]);
-                this.data[i].shift();
+                traces[i].attr("d",line).attr("transform",null);
+                data[i].push(values[i]);
+                data[i].shift();
             }
     };
+    var steppo = this.step;
     this.update = function(){
-        d3.select("#svg_for_"+this.div_id+this.unique).remove();
-        this.setup();
+        d3.select("#svg_for_"+div_id+unique).remove();
+        setup();
     };
-    if (this.socket != null){
-        this.socket.on("update_"+this.unique,function(values){
-            this.step(values);
-        });
+    if (socket != null){
+        socket.on("update_"+unique,function(values){steppo(values);});
     }
 };
 

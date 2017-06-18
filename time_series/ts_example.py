@@ -60,23 +60,25 @@ elif async_mode == 'gevent':
     from gevent import monkey
     monkey.patch_all()
 
-
 #Start up Flask server:
 app = Flask(__name__, template_folder = './',static_url_path='/static')
 app.config['SECRET_KEY'] = 'secret!' #shhh don't tell anyone. Is a secret
 socketio = SocketIO(app, async_mode = async_mode)
 thread = None
 
-unique = 456
 
 def dataThread():
+    unique = 456
+    amp1 = 50
+    amp2 = 12
+    omega1 = 0.5
+    omega2 = 1
     while True:
         val1 = amp1*math.sin(omega1*time.time())
         val2 = amp2*math.sin(omega2*time.time())
         socketio.emit('update_{}'.format(unique),[val1,val2],broadcast =True)
         print('sending')
         time.sleep(0.1)
-
 
 @app.route('/')
 def index():
@@ -87,12 +89,6 @@ def index():
         thread.daemon = True
         thread.start()
     return render_template('time_series_example.html')
-
-amp1 = 50
-amp2 = 12
-omega1 = 0.5
-omega2 = 1
-
 
 
 if __name__ == '__main__':
