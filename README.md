@@ -95,7 +95,7 @@ reporter_y.step(Math.random());
 #### Arguments:
 
 ```
-function Numerical_Reporter(div_id,title,range,color,bg_color){
+function Numerical_Reporter(div_id,title,range,color,bg_color, unique, socket=null){
 ```
 
 
@@ -104,15 +104,15 @@ function Numerical_Reporter(div_id,title,range,color,bg_color){
 * `range`: If you'd like to limit the displayed numerical range use this. It needs an array of `[low_limit,high_limit]`.  If you'd like to avoid using this, specify a `range` of `[,]`
 * `color`: Color of the displayed font
 * `bg_color`: Background color of the displayed font.
-
-
+* `unique`: Unique identifier (used for id-ing divs, etc...)...up to user to make sure this is unique
+* `socket`: a Websocket object (a la `socket.io.js`)
 
 
 ### `Toggle`
 
 ### `Slider`
 
-The basic idea is an object that will link command sliders to Alternatin
+The basic idea is an object that will link command sliders to an Alternator thing (Gonzo's job)
 
 ### `Joystick`
 
@@ -121,3 +121,9 @@ Things it needs:
     * X-Y Sensitivity (must have some sort of event it triggers)...need to think about how to generalize triggering of async events in general
     * Center-Return/Not-Center-Return Option
 
+
+
+
+##Important!!
+
+A copy of `socket.io.js` from <a href="https://github.com/socketio/socket.io-client" target="_blank">here</a> is being used for local development.
