@@ -1,54 +1,3 @@
-$(document).on("click", ".scaler",function(){
-    var parent = plot;
-    var tempid = $(this).parent().parent().attr("id");
-    var parid = tempid.substr(0,tempid.length-3);
-    //var parid = $(this).parent().parent().attr("id").replace("top","")
-    switch ($(this).attr("id")){
-        case parid+"VM":
-            var parent_range = parent.y_range[1] - parent.y_range[0];
-            var parent_mid = (parent.y_range[1] - parent.y_range[0])/2 + parent.y_range[0];
-            parent.y_range[1] = (parent.y_range[1] - parent_mid)*2+parent_mid;
-            parent.y_range[0] = parent_mid-(parent_mid - parent.y_range[0])*2;
-            break;
-        case parid+"VP":
-            var parent_range = parent.y_range[1] - parent.y_range[0];
-            var parent_mid = (parent.y_range[1] - parent.y_range[0])/2 + parent.y_range[0];
-            parent.y_range[1] = (parent.y_range[1] - parent_mid)*0.5+parent_mid;
-            parent.y_range[0] = parent_mid-(parent_mid - parent.y_range[0])*0.5;
-            break;
-        case parid+"VRS":
-            parent.y_range =parent.y_range_orig.slice(0);
-            break;
-        case parid+"HM":
-            if (parent.vals >4){
-                parent.vals = Math.round(parent.vals/2);
-            }
-            parent.xchange = true;
-            break;
-        case parid+"HP":
-            parent.vals = parent.vals*2;
-            parent.xchange = true;
-            break;
-        case parid+"HRS":
-            parent.vals =parent.vals_orig;
-            parent.xchange = true;
-            break;
-        case parid+"OD":
-            var diff = parent.y_range[1] - parent.y_range[0];
-            var tp = diff*0.1;
-            parent.y_range[1] = parent.y_range[1]+tp;
-            parent.y_range[0]=parent.y_range[0]+tp;
-            break;
-        case parid+"OI":
-            var diff = parent.y_range[1] - parent.y_range[0];
-            var tp = diff*0.1;
-            parent.y_range[1] = parent.y_range[1]-tp;
-            parent.y_range[0] = parent.y_range[0]-tp;
-            break;
-    }
-    parent.update();
-});
-
 
 /*not working right now (5/28/2017
 function plot_generate(name,min,max,datapoints){
@@ -79,7 +28,7 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     var margin = {top: 20, right: 30, bottom: 30, left: 40};
     var data = [];
     for (var i = 0; i<num_traces; i++){
-        data.push(d3.range(vals).map(function() { return 0; }));
+        data.push(d3.range(this.vals).map(function() { return 0; }));
     }
     var height = height - margin.top - margin.bottom;
     var width = width - margin.right - margin.left;
@@ -90,15 +39,15 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     this.setup = function(){
         if (xchange){
             xchange = false;
-            if (vals> data[0].length){//increasing amount
+            if (this.vals> data[0].length){//increasing amount
                 for (var i = 0; i<num_traces;i++){
-                    var tempdata = d3.range(vals-data[i].length).map(function() { return 0; });
+                    var tempdata = d3.range(this.vals-data[i].length).map(function() { return 0; });
                     data[i] = tempdata.concat(data[i]);
                 }
-            }else if (vals< data[0].length){
-                var to_remove = data[0].length-vals;
+            }else if (this.vals< data[0].length){
+                var to_remove = data[0].length-this.vals;
                 for(var i =0; i<num_traces; i++){
-                    data[i] = data[i].slice(-vals);
+                    data[i] = data[i].slice(-this.vals);
                 }
             }
         }
@@ -106,7 +55,7 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
         var chart = d3.select("#"+div_id+unique+"top").append("svg")
         .attr("id","svg_for_"+div_id+unique).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
         var y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
-        var x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
+        var x = d3.scale.linear().domain([0,this.vals-1]).range([0,width]);
         var x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(11);
         var y_axis = d3.svg.axis().scale(y).orient("left").ticks(11);
         var x_grid = d3.svg.axis().scale(x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
@@ -155,5 +104,58 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     if (socket != null){
         socket.on("update_"+unique,function(values){steppo(values);});
     }
+    var parent = this;
+    $("#"+div_id).on("click",function(){
+        console.log("HIHIHI");
+    });
+    $("#"+div_id).on("click",".scaler",function(){
+        console.log("click happened");
+        var tempid = $(this).parent().parent().attr("id");
+        var parid = tempid.substr(0,tempid.length-3);
+        switch ($(this).attr("id")){
+            case parid+"VM":
+                var parent_range = parent.y_range[1] - parent.y_range[0];
+                var parent_mid = (parent.y_range[1] - parent.y_range[0])/2 + parent.y_range[0];
+                parent.y_range[1] = (parent.y_range[1] - parent_mid)*2+parent_mid;
+                parent.y_range[0] = parent_mid-(parent_mid - parent.y_range[0])*2;
+                break;
+            case parid+"VP":
+                var parent_range = parent.y_range[1] - parent.y_range[0];
+                var parent_mid = (parent.y_range[1] - parent.y_range[0])/2 + parent.y_range[0];
+                parent.y_range[1] = (parent.y_range[1] - parent_mid)*0.5+parent_mid;
+                parent.y_range[0] = parent_mid-(parent_mid - parent.y_range[0])*0.5;
+                break;
+            case parid+"VRS":
+                parent.y_range =parent.y_range_orig.slice(0);
+                break;
+            case parid+"HM":
+                if (parent.vals >4){
+                    parent.vals = Math.round(parent.vals/2);
+                }
+                parent.xchange = true;
+                break;
+            case parid+"HP":
+                parent.vals = parent.vals*2;
+                parent.xchange = true;
+                break;
+            case parid+"HRS":
+                parent.vals =parent.vals_orig;
+                parent.xchange = true;
+                break;
+            case parid+"OD":
+                var diff = parent.y_range[1] - parent.y_range[0];
+                var tp = diff*0.1;
+                parent.y_range[1] = parent.y_range[1]+tp;
+                parent.y_range[0]=parent.y_range[0]+tp;
+                break;
+            case parid+"OI":
+                var diff = parent.y_range[1] - parent.y_range[0];
+                var tp = diff*0.1;
+                parent.y_range[1] = parent.y_range[1]-tp;
+                parent.y_range[0] = parent.y_range[0]-tp;
+                break;
+        }
+        parent.update();
+    });
 };
 

@@ -27,15 +27,16 @@ $(document).mousemove(function(e){
 var PLOT_HEIGHT = 200;
 var PLOT_WIDTH = 300;
 var plot;
+var plot2;
 window.onload = function(){
     var socket = io('http://localhost:3000');
     var unique = 456;
     plot = new Time_Series("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"],unique,socket);
     plot2 = new Time_Series("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"],unique+1);
-}
-timer = setInterval(function(){
-      plot2.step([mouseX,mouseY]);
+    timer = setInterval(function(){
+        plot2.step([mouseX,mouseY]);
     }, 10);
+}
 </script>
 
 </html>
