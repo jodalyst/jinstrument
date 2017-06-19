@@ -75,7 +75,7 @@ function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, 
     this.color = color;
     this.type = type;
     this.x_scale = x_scale;
-    this.y_scale = y_scale; 
+    this.y_scale = y_scale;
     this.update_function = update_function;
     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
     this.vals_orig = x_range;
@@ -84,7 +84,7 @@ function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, 
     this.vals = vals;
     this.xchange = false;
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
-    
+
     this.data = d3.range(this.vals).map(function() { return 0; });
     this.height = height - this.margin.top - this.margin.bottom;
     this.width = width - this.margin.right - this.margin.left;
@@ -104,7 +104,7 @@ function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, 
         //this.data = d3.range(this.vals).map(function() { return 0; });
         this.chart = d3.select("#"+this.div_id+"top").append("svg")
         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
-        if (this.x_scale=="linear"){ 
+        if (this.x_scale=="linear"){
             this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
         }else if(this.x_scale == "log"){
             this.y = d3.scale.log().domain([0,this.vals-1]).range([0,this.width]);
@@ -148,7 +148,7 @@ function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, 
     //$("#"+this.div_id+"BC4").append("<button class='scaler' id=\""+this.div_id+"HP\">Z+</button>");
     this.value_update = function(x,y){
 
-    };    
+    };
     this.step = function(values){
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             for (var i=0; i<values.length; i++){
@@ -162,4 +162,3 @@ function Time_Parallel_Chart(div_id,width,height,x_range,y_range, vals, ,color, 
         this.setup();
     };
 };
-
