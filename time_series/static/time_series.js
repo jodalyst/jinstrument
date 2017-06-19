@@ -5,7 +5,7 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     var colors = colors;
     var y_range_orig = y_range.slice(0); //used for reset mechanisms.
     var vals_orig = x_range;
-    var y_range = y_range;
+    var y_range = y_range.slice(0);
     var num_traces = num_traces;
     var vals = x_range;
     var total_height = height;
@@ -22,7 +22,20 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     var top_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"top\">");
     var bottom_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"bot\">");
     var line;
+    var traces;
+    
+
+    var x_axis;
+    var y_axis;
+    var x;
+    var y;
+    var x_grid;
+    var y_grid;
+    var chart;
+    var chartBody;
+    
     var draw_plot_region = function(){
+        console.log("drawing plot for "+unique);
         if (xchange){
             xchange = false;
             if (vals> data[0].length){//increasing amount
@@ -37,28 +50,28 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
                 }
             }
         }
-        this.chart = d3.select("#"+div_id+unique+"top").append("svg")
+        chart = d3.select("#"+div_id+unique+"top").append("svg")
         .attr("id","svg_for_"+div_id+unique).attr("width",total_width).attr("height",total_height).attr('style',"display:inline-block;").attr("class", "gsc");
-        this.y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
-        this.x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
-        this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(11);
-        this.y_axis = d3.svg.axis().scale(this.y).orient("left").ticks(11);
-        this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
-        this.y_grid = d3.svg.axis().scale(this.y).orient("left").ticks(11).tickSize(-width, 0, 0).tickFormat("");
-        this.chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
-        this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_grid);
-        this.chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_grid);
-        this.clippy = this.chart.append("defs").append("svg:clipPath").attr("id",div_id+unique+"clip").append("svg:rect").attr("id",div_id+unique+"clipRect").attr("x",margin.left).attr("y",margin.top).attr("width",width).attr("height",height);
-        this.chartBody = this.chart.append("g").attr("clip-path","url(#"+div_id+unique+"clip"+")");
-        line = d3.svg.line().x(function(d, i) { return this.x(i)+margin.left; }.bind(this)).y(function(d, i) { return this.y(d)+margin.top; }.bind(this));
+        y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
+        x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
+        x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(11);
+        y_axis = d3.svg.axis().scale(y).orient("left").ticks(11);
+        x_grid = d3.svg.axis().scale(x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
+        y_grid = d3.svg.axis().scale(y).orient("left").ticks(11).tickSize(-width, 0, 0).tickFormat("");
+        chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
+        chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_grid);
+        chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(y_grid);
+        clippy = chart.append("defs").append("svg:clipPath").attr("id",div_id+unique+"clip").append("svg:rect").attr("id",div_id+unique+"clipRect").attr("x",margin.left).attr("y",margin.top).attr("width",width).attr("height",height);
+        chartBody = chart.append("g").attr("clip-path","url(#"+div_id+unique+"clip"+")");
+        line = new d3.svg.line().x(function(d, i) { return x(i)+margin.left; }.bind(this)).y(function(d, i) { return y(d)+margin.top; }.bind(this));
         traces = [];
+        console.log(line);
         for (var i=0; i<num_traces; i++){
-            traces.push(this.chartBody.append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
+            traces.push(chartBody.append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors[i]));
         }
-        this.chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(this.x_axis).selectAll("text")
+        chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_axis).selectAll("text")
         .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
-        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(this.y_axis);
-        //this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line") .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
+        chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(y_axis);
     };
     draw_plot_region();
     $("#"+div_id+unique+"top").prepend("<div class ='v_button_container' id = \""+div_id+unique+"BC2\" >");
@@ -88,11 +101,6 @@ function Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, uniq
     if (socket != null){
         socket.on("update_"+unique,function(values){steppo(values);});
     }
-    console.log(parent);
-    console.log("#"+div_id);
-    $("#"+div_id).on("click",function(){
-        console.log("HIHIHI");
-    });
     $("#"+div_id).on("click",function(event){
         console.log(event.target.id);
         switch(event.target.id){
