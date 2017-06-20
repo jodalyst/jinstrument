@@ -14,22 +14,23 @@
 
   <body>
     <p>This is an example of a time parallel plot using the coordinates of your mouse</p>
-    <script type="text/javascript" src="parallel2.js"></script>
-    <div class="chart"></div>
+    <script type="text/javascript" src="./js/parallel2.js"></script>
+    <div class="plotbox"></div>
     <script>
       var mouseX, mouseY;
       $(document).mousemove(function(e){
         mouseX = e.pageX;
         mouseY = e.pageY;
       });
-      var MAX = 1000;
+      var MAX = 1278;
       var MIN = 0;
+      var LABELS = ["x pos", "y pos","z pos"];
       var PLOT_HEIGHT = 200;
       var PLOT_WIDTH = 300;
-      var plot = new Parallel_Plot(3, PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN);
+      var plot = new Parallel_Plot(3,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black");
       var state = 0;
       timer = setInterval(function(){
-        plot.step([mouseX,mouseY]);
+        plot.step([mouseX,mouseY,500]);
       }, 10);
     </script>
   </body>
