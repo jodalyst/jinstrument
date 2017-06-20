@@ -27,6 +27,7 @@ var plot = new LWChart("plotbox",PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","b
 var state = 0;
 timer = setInterval(function(){
       plot.step([mouseX,mouseY]);
+      console.log(mouseX,mouseY);
     }, 10);
 </script>
 </html>
