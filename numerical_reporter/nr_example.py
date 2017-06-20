@@ -68,15 +68,21 @@ thread = None
 
 
 def dataThread():
-    unique = 456
+    unique3 = 125
+    unique4 = 126
     amp1 = 50
     amp2 = 12
     omega1 = 10
     omega2 = 30
+    count = 0
+    print("start running")
     while True:
         val1 = amp1*math.sin(omega1*time.time())
         val2 = amp2*math.sin(omega2*time.time())
-        socketio.emit('update_{}'.format(unique),[val1,val2],broadcast =True)
+        socketio.emit('update_{}'.format(unique3),val1,broadcast =True)
+        if count%5 == 0:
+            socketio.emit('update_{}'.format(unique4),val2,broadcast =True)
+        count+=1
         print('sending')
         time.sleep(0.02)
 
@@ -88,7 +94,7 @@ def index():
         thread = Thread(target=dataThread)
         thread.daemon = True
         thread.start()
-    return render_template('time_series_example.html')
+    return render_template('numerical_reporter_example.html')
 
 
 if __name__ == '__main__':
