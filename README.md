@@ -4,6 +4,9 @@
 This is a packaging-up and development of the plot window used in 6302View. The ultimate goal of this project is to package the plotting window object more properly into a modular js library for easier deployment.  In addition the following features to the 
 
 
+**CAUTION: MULTIPLE VERSIONS OF THE PRIMARY FILES EXIST WITHIN THE SAME BRANCH AT THIS POINT! USE CAUTION WHEN BUILDING ON THE VERSIONS FOUND IN THE `js` FOLDER WHILE THIS NOTE IS PRESENT! **
+
+
 ## Methods/Objects
 
 ### `Time_Series`
