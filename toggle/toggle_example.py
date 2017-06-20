@@ -66,8 +66,26 @@ app.config['SECRET_KEY'] = 'secret!' #shhh don't tell anyone. Is a secret
 socketio = SocketIO(app, async_mode = async_mode)
 thread = None
 
+
+def dataThread():
+    unique = 123
+    count = 0
+    while True:
+        time.sleep(0.02)
+        count +=1
+        if count == 400:
+            socketio.emit('update_{}'.format(unique),'Blue')
+            print('sending')
+            count = 0
+
 @app.route('/')
 def index():
+    global thread
+    print ("A user connected")
+    if thread is None:
+        thread = Thread(target=dataThread)
+        thread.daemon = True
+        thread.start()
     return render_template('toggle_example.html')
 
 @socketio.on('reporting')
