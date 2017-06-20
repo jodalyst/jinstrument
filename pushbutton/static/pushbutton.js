@@ -1,6 +1,6 @@
-function Button(div_id,label,color,bg_color,unique,socket=null){
+function PushButton(div_id,label,color,bg_color,unique,socket=null){
     var div_id = String(div_id);
-    var label = String(title);
+    var label = String(label);
     var color = color;
     var bg_color = bg_color;
     var value; //holds toggle value right now
@@ -8,15 +8,18 @@ function Button(div_id,label,color,bg_color,unique,socket=null){
     var socket = socket;
     var setup = function(){
         $("#"+div_id).append("<div class ='toggle_holder' id=\""+div_id+unique+"_holder\"></div>");
-        $("#"+div_id+unique+"_holder").append("<button class=\"ui-button\" id=\""+ div_id+unique+"button" +"\" style=\"background-color:" + bg_color+";color: " + color +"\">"+label+"</button>");
+        //$("#"+div_id+unique+"_holder").append("<button class=\"ui-button\" id=\""+ div_id+unique+"button" +"\" style=\"background-color:" + bg_color+";color: " + color +"\">"+label+"</button>");
+        $("#"+div_id+unique+"_holder").append("<button class=\"ui-button\" id=\""+ div_id+unique+"button" +"\">"+label+"</button>");
         $("#"+div_id+unique+"_holder").trigger("create");
     }
     setup();
     if (socket != null){
         $('#'+div_id+unique+"toggle").on('push',function(){
+            console.log("PUSH");
             socket.emit('reporting', {'unique':unique, 'data':"Push"});
         });
         $('#'+div_id+unique+"toggle").off('push',function(){
+            console.log("UNPUSH");
             socket.emit('reporting', {'unique':unique, 'data':"Unpush"});
         });
     };
