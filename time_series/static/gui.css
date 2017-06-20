@@ -65,6 +65,7 @@ svg {
     font-weight: bold;
     font-size: 18px;
     width: 100px;
+    overflow:hidden;
 }
 
 .param_title{
@@ -209,4 +210,9 @@ svg {
     align-items: center;
     justify-content: center;
     flex-direction: row;
+}
+
+
+.button_holder{
+    width: 150px;
 }

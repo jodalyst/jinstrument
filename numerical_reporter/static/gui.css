@@ -212,3 +212,7 @@ svg {
     flex-direction: row;
 }
 
+
+.button_holder{
+    width: 150px;
+}
