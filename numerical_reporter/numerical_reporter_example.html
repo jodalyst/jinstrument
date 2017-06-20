@@ -37,8 +37,8 @@ window.onload = function(){
     var socket = io('http://localhost:3000');
     var reporter_x = new Numerical_Reporter("pos_1","X Position",[-100,500],"red","black", unique1);
     var reporter_y = new Numerical_Reporter("pos_1","Y Position",[50,250],"yellow","blue", unique2);
-    var reporter_x2 = new Numerical_Reporter("pos_2","X Position",[,],"black","gray", unique3,socket);
-    var reporter_y2 = new Numerical_Reporter("pos_2","Y Position",[,],"orange","red", unique4,socket);
+    var reporter_x2 = new Numerical_Reporter("pos_2","X Position",[,],"black","gray", unique3,4,socket);
+    var reporter_y2 = new Numerical_Reporter("pos_2","Y Position",[,],"orange","red", unique4,6,socket);
 
     timer = setInterval(function(){
         reporter_x.step(mouseX);
