@@ -5,17 +5,20 @@
     <title>Bar Chart</title>
     <link rel="stylesheet" href="./css/gui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> <!--jquery-->
-  
+
     <!-- Alternatively use d3.js here -->
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script> <!--D3-->
-  
+
 
   </head>
 
   <body>
     <p>This is an example of a time parallel plot using the coordinates of your mouse</p>
     <script type="text/javascript" src="./js/parallel2.js"></script>
-    <div class="plotbox"></div>
+    <div>
+      <div class = "plot_title">Mouse Cursor Graph</div>
+      <div id = "plotbox"></div>
+    </div>
     <script>
       var mouseX, mouseY;
       $(document).mousemove(function(e){
@@ -24,13 +27,20 @@
       });
       var MAX = 1278;
       var MIN = 0;
-      var LABELS = ["x pos", "y pos","z pos"];
+      var LABELS = ["x pos", "y pos"];
       var PLOT_HEIGHT = 200;
       var PLOT_WIDTH = 300;
-      var plot = new Parallel_Plot(3,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black");
+      var TYPE = "line";
+      var plot = new Parallel_Plot(3,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","4",TYPE);
+      var plot2 = new Parallel_Plot(2,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","6","bar");
+      var plot3 = new Parallel_Plot(4,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","7",TYPE);
+      var plot4 = new Parallel_Plot(4,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","8","bar");
       var state = 0;
       timer = setInterval(function(){
-        plot.step([mouseX,mouseY,500]);
+        plot.step([mouseX,mouseY,mouseX]);
+        plot2.step([mouseX,mouseY]);
+        plot3.step([mouseX,mouseY,mouseX,mouseY]);
+        plot4.step([mouseX,mouseY,mouseX,mouseY]);
       }, 10);
     </script>
   </body>
