@@ -18,11 +18,11 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
 # OR OTHER DEALINGS IN THE SOFTWARE.
 
-#Version 9 of 6.302x Software
+#Version 0 of j
 #questions? email me at jodalyst@mit.edu
-#feel free to mod this code however you want.  If you do some cool stuff, let me know...I'd like to see how far this approach can go before it hits limits
 
 
+# Based off of Python Flask FAQ field (Miguel is awesome)
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on available packages.
@@ -203,10 +203,7 @@ def serialThread():
     global setupString
     global command_terms
     while True:
-        #print (serialConnected)
         if serialConnected:
-            print("serial connected!")
-            print("not setup")
             writeUpdates('~',0)
             time.sleep(2.0)
             serialLock.acquire()
@@ -216,24 +213,15 @@ def serialThread():
             except:
                 print ("initi string reading issue")
             serialLock.release()
-            print("before")
-            print(new_setupString)
             new_setupString = strip_until_marker(new_setupString)
-            print("after")
-            print(new_setupString)
             temp_commands = new_setupString.split('&')
             temp_commands = temp_commands[1:-1]
-            print(temp_commands)
-            print(command_terms)
             if temp_commands != command_terms: #only reload the gui if the configuration setup string has changed!
                 command_terms = temp_commands
-                print("DETECTED DIFFERENT STARTUP STRING!")
                 setupString = new_setupString
-                print(setupString)
                 temp = setupString.split('&',1)[1]
                 temp = temp.rsplit('&',1)[0]
                 setupString = temp
-                print(setupString)
                 try:#send up to javascript to sort its part out
                     socketio.emit('startup',setupString,broadcast =True)
                 except:
@@ -246,9 +234,7 @@ def serialThread():
                 h = []  #contains headroom value if that is being plotted
                 for x in command_terms:
                     if len(x)>0 and x[0] =='S': #is a slider
-                        print("slider")
                         slider_vals = x.split('~') #chop string
-                        print(slider_vals)
                         #next: add key to system_parameters dict of slider name
                         #entry is starting val (0) and one char value used for comms
                         system_parameters[slider_vals[1]]=[0,slider_vals[2]] 
@@ -260,11 +246,9 @@ def serialThread():
                         alt_data['period'] = float(vals[2]) #period unpacked
                         alt_data['param'] = vals[1] #link alternate to selected parameter
                     if len(x)>0 and x[0]=='T': #we have a temporal plot
-                        print("Plot")
                         plot_vals = x.split('~') #split substring
                         t.append(plot_vals[1]) #add name to t list
                         #next line: append list: [num_bytes,signed/unsigned/float,etc..]
-                        print(plot_vals)
                         spaces.append([int(plot_vals[2][1]),plot_vals[2][0]])
                         plot_count +=1 #increment plot count
                     if len(x)>0 and x[0]=='H':
@@ -276,13 +260,11 @@ def serialThread():
                         elif head_vals[1] =='4':
                             spaces.append([4,'F']) #needed since ARM32 Teensy
                 params_and_values = t+h+s #in order plots, headroom, sliders
-                print("Identified values: %r" %(params_and_values))
                 expected_length = sum(x[0] for x in spaces)+2 #2 from open/closing byte
                 #parse_prototype is function that will chop up incoming bytes for sending up to the GUI
                 def parse_prototype(listo):
                     new_out = []
                     current_index=1 #start 1 up because of start byte
-                    #print(listo)
                     for x in range(plot_count):
                         val = 0
                         if spaces[x][0] == 1:
@@ -305,35 +287,23 @@ def serialThread():
                     return new_out
                 parseFunction = parse_prototype
                 while not allGoodFromGUI:
-                    print("Waiting for GUI Setup...")
                     time.sleep(1.0)
                 isSetup = True
             else:
-                print("SAME AS BEFORE!")
                 inform_dev() #just tell device that we are good
                 serialLock.acquire()
                 try:
                     serialPort.flushInput()
                 except:
-                    print ("initi string reading issue")
                 serialLock.release()
-                print("updating Parameters:")
                 for x in s: #reload gui and device
                     socketio.emit('setup slider',{0:x,1:str(system_parameters[x][0])}, broadcast=True)
-                    print("Writing %s to be %0.4f" %(system_parameters[x][1],system_parameters[x][0]))
+                    #print("Writing %s to be %0.4f" %(system_parameters[x][1],system_parameters[x][0]))
                     writeUpdates(system_parameters[x][1],system_parameters[x][0])
                     time.sleep(0.1)
                     writeUpdates(system_parameters[x][1],system_parameters[x][0])
                     time.sleep(0.1)
             time.sleep(1)
-            print(system_parameters)
-            print ("Starting to read serial subthread")
-
-            print ('Alternating state')
-            print (alternate)
-            print("expected length:")
-            print (expected_length)
-            print (serialConnected)
             while serialConnected:
                 serialLock.acquire()
                 b = serialPort.read(expected_length)

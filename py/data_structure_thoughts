@@ -1,0 +1,21 @@
+#The way we should build the page datastructure:
+
+Python needs to be responsible for counting up 
+
+Page Structure:
+{'struct':
+
+{
+}
+
+'settings':{
+
+
+}
+
+
+
+}
+
+
+
