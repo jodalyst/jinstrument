@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 <script src="/static/socket.io.js"></script>
-  <script src="/static/toggle.js" ></script>
+  <script src="/static/pulldown.js" ></script>
   <link rel="stylesheet" href="/static/gui.css">
   <title>Toggle Demo of Socket-Based Reporting</title>
 </head>
@@ -20,9 +20,9 @@ var unique1 = 123;
 var unique2 = 124;
 
 window.onload = function(){
-    var socket = io('http://localhost:3000');
-    var toggle_1 = new Toggle("pos_1","X Position",["Red","Blue"],unique1,socket);
-    var toggle_2 = new Toggle("pos_1","Y Position",["ON","OFF"], unique2,socket);
+    var socket = io('http://localhost:5000');
+    var pd_1 = new Pulldown("pos_1","BAUD",[115200,9600,3400,55],unique1,socket);
+    var pd_2 = new Pulldown("pos_1","Favorite Food",["deer","lamb","kale"], unique2,socket);
 }
 </script>
 </html>
