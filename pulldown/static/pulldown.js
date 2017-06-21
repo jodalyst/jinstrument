@@ -1,4 +1,4 @@
-function Toggle(div_id,title,names,unique,socket=null){
+function Pulldown(div_id,title,names,unique,socket=null){
     var div_id = String(div_id);
     var title = String(title);
     var names = names; //should be 2-long array of values for when switch is low or high
@@ -12,6 +12,7 @@ function Toggle(div_id,title,names,unique,socket=null){
         var build_string = "<select name=\""+ div_id+unique+"pulldowner" +"\" id=\""+div_id+unique+"pulldown"+"\">";
         for (var i=0; i<names.length; i++){
             build_string+="<option value=\""+names[i]+"\">"+names[i]+"</option>";
+        }
         build_string+="</select>";
         $("#"+div_id+unique+"_holder").append(build_string);
         //$("#"+div_id+unique+"_holder").append("<select name=\""+ div_id+unique+"pulldowner" +"\" id=\""+div_id+unique+"pulldown"+"\"><option value=\""+names[0]+"\">"+names[0]+"</option><option value=\""+names[1]+"\">"+names[1]+" </option></select>");
