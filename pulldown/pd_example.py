@@ -74,7 +74,7 @@ def dataThread():
         time.sleep(0.02)
         count +=1
         if count == 400:
-            socketio.emit('update_{}'.format(unique),'Blue')
+            socketio.emit('update_{}'.format(unique),55)
             print('sending')
             count = 0
 
@@ -86,7 +86,7 @@ def index():
         thread = Thread(target=dataThread)
         thread.daemon = True
         thread.start()
-    return render_template('toggle_example.html')
+    return render_template('pulldown_example.html')
 
 @socketio.on('reporting')
 def action(content):
@@ -95,5 +95,5 @@ def action(content):
     print("{} changed to {}!".format(unique,data))
 
 if __name__ == '__main__':
-    socketio.run(app, port=3000, debug=True)
+    socketio.run(app, port=5000, debug=True)
 

@@ -20,9 +20,9 @@ var unique1 = 123;
 var unique2 = 124;
 
 window.onload = function(){
-    var socket = io('http://localhost:3000');
-    var toggle_1 = new Pulldown("pos_1","BAUD",[115200,9600,3400,55],unique1,socket);
-    var toggle_2 = new Pulldown("pos_1","Favorite Food",["deer","lamb","kale"], unique2,socket);
+    var socket = io('http://localhost:5000');
+    var pd_1 = new Pulldown("pos_1","BAUD",[115200,9600,3400,55],unique1,socket);
+    var pd_2 = new Pulldown("pos_1","Favorite Food",["deer","lamb","kale"], unique2,socket);
 }
 </script>
 </html>

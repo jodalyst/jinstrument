@@ -22,7 +22,7 @@ function Pulldown(div_id,title,names,unique,socket=null){
     }
     setup();
     if (socket != null){
-        socket.on("update_"+unique,function(va){console.log("hit");if (built){$('#'+div_id+unique+"pulldown").val(va).slider('refresh');}});
+        socket.on("update_"+unique,function(va){console.log("hit");if (built){$('#'+div_id+unique+"pulldown").val(va).selectmenu('refresh');}});
         $('#'+div_id+unique+"pulldown").on('change',function(){
             socket.emit('reporting', {'unique':unique, 'data':$(this).val()});
         });
