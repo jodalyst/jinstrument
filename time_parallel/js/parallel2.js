@@ -53,6 +53,9 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
             .attr("width",plot_width+"px")
             .style("display", "inline-block")
             .attr("id","svg_for_plotbox" + unique);
+    this.svg.append("defs").append("svg:clipPath").attr("id",unique+"clip")
+    .append("svg:rect").attr("id",unique+"clipRect").attr("x",margin.left)
+    .attr("y",margin.top).attr("width",plot_width-margin.left).attr("height",plot_height-margin.bottom-margin.top);
     //create x axis
     this.xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickValues(ticks)
     .tickFormat(function(d,i){ return tickLabels[i] });
@@ -71,7 +74,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
     // chartBody = this.svg.append("g").attr("clip-path","url(#"+unique+"clip"+")");
     if(type == "bar"){
     //make the bars
-    this.svg.append("g").attr("class","bar_container").selectAll("rect")
+    this.svg.append("g").attr("class","bar_container").attr("clip-path","url(#" + unique+"clip)").selectAll("rect")
     .data(self.dataArray).enter().append("rect")
     .attr("height",function(d,i){return scaler(d);})
     .attr("width",function(){return (plot_width-self.axisPadding)/self.dataArray.length-20;})
@@ -85,7 +88,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
 
     else if(type == "line"){
       //make lines
-      this.svg.append("g").attr("class","bar_container").selectAll("circle")
+      this.svg.append("g").attr("class","bar_container").attr("clip-path","url(#" + unique+"clip)").selectAll("circle")
       .data(self.dataArray).enter().append("circle")
       .attr("cy",function(d,i){return scaler(d);})
       .attr("stroke","black")
