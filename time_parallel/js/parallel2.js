@@ -74,7 +74,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
     // chartBody = this.svg.append("g").attr("clip-path","url(#"+unique+"clip"+")");
     if(type == "bar"){
     //make the bars
-    this.svg.append("g").attr("class","bar_container").attr("clip-path","url(#" + unique+"clip)").selectAll("rect")
+    this.svg.append("g").attr("class","bar_container").selectAll("rect")
     .data(self.dataArray).enter().append("rect")
     .attr("height",function(d,i){return scaler(d);})
     .attr("width",function(){return (plot_width-self.axisPadding)/self.dataArray.length-20;})
@@ -217,28 +217,27 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
       }
 
   this.step = function(values){
-    this.newData = [];
+    var newData = [];
     for(i = 0; i<values.length;i++){
-      this.newData[i] = scaler(values[i]);
+      newData[i] = scaler(values[i]);
     }
+    console.log("original: " + values);
     if(type == "bar"){
-    d3.select("#svg_for_plotbox"+unique).selectAll("rect")
+    d3.select("#svg_for_plotbox"+unique).selectAll(".bar")
     .attr("transform","scale(1,-1)")
     .attr("height",function(d,i){
-      if(isNaN(self.newData[i])){
-        return "20px";
-      }
-      return (self.newData[i] + "px");})
-      .attr("y",function(d,i){
+      console.log("i: " + newData[i]);
+      return (newData[i] + "px");})
+    .attr("y",function(d,i){
         return  -1*plot_height+margin.bottom;});
     }
     else if(type == "line"){
       d3.select("#svg_for_plotbox"+unique).selectAll("circle")
-      .attr("cy",function(d,i){return (self.newData[i]+margin.bottom);});
-      for(i = 0;i<self.newData.length-1;i++){
+      .attr("cy",function(d,i){return (newData[i]+margin.bottom);});
+      for(i = 0;i<newData.length-1;i++){
       d3.select("#svg_for_plotbox"+unique).select("#line"+i)
-      .attr("y1",self.newData[i]+margin.bottom)
-      .attr("y2",self.newData[i+1]+margin.bottom);
+      .attr("y1",newData[i]+margin.bottom)
+      .attr("y2",newData[i+1]+margin.bottom);
       }
     }
     // this.svg.selectAll(".text").text(function(d,i){return values[i];})
