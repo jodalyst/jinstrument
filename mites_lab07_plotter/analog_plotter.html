@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="/static/socket.io.js"></script>
+  <script src="/static/time_series.js" ></script>
+  <link rel="stylesheet" href="/static/gui.css">
+
+
+</head>
+<body>
+<p>Analog Measurement on Your Device!</p>
+  <div >
+    <div id="plotbox"></div>
+  </div>
+</body>
+
+<script>
+var PLOT_HEIGHT = 400;
+var PLOT_WIDTH = 600;
+var plot;
+var plot2;
+window.onload = function(){
+    var socket = io('http://localhost:3000');
+    var unique = 456;
+    plot = new Time_Series("plotbox",'Pin 0:',PLOT_WIDTH, PLOT_HEIGHT,200,[0,1050],1,["green"],unique,socket);
+}
+</script>
+
+</html>
