@@ -9,7 +9,10 @@ This is a packaging-up and development of the plot window used in 6302View. The 
 
 ## Methods/Objects
 
-### `Time_Series`
+### `Time_Series` (note description below seriously defunct now)
+
+*Visit the `time_series` folder for most recent version of code*
+
 ```
 Time_Series(div_id,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
 ```
