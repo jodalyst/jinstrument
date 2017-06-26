@@ -34,7 +34,7 @@ window.onload = function(){
     plot = new Time_Series("plotbox",'Sine Waves',PLOT_WIDTH, PLOT_HEIGHT,60,[-100,100],2,["green","yellow"],unique,socket);
     plot2 = new Time_Series("plotbox",'Mouse Moves',PLOT_WIDTH, PLOT_HEIGHT,60,[0,1000],2,["red","blue"],unique+1);
     timer = setInterval(function(){
-        plot2.step([mouseX,mouseY]);
+        plot2.step([[mouseX],[mouseY]]);
     }, 10);
 }
 </script>

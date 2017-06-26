@@ -94,6 +94,7 @@ function Time_Series(div_id,title,width,height,x_range,y_range,num_traces,colors
                 for (var j=0; j<values[i].length;j++){
                     data[i].push(values[i][j]);
                     data[i].shift();
+                }
             }
     };
     var steppo = this.step;
