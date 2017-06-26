@@ -91,8 +91,9 @@ function Time_Series(div_id,title,width,height,x_range,y_range,num_traces,colors
             //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
             for (var i=0; i<values.length; i++){
                 traces[i].attr("d",line).attr("transform",null);
-                data[i].push(values[i]);
-                data[i].shift();
+                for (var j=0; j<values[i].length;j++){
+                    data[i].push(values[i][j]);
+                    data[i].shift();
             }
     };
     var steppo = this.step;

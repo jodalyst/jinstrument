@@ -66,7 +66,6 @@ app.config['SECRET_KEY'] = 'secret!' #shhh don't tell anyone. Is a secret
 socketio = SocketIO(app, async_mode = async_mode)
 thread = None
 
-
 def dataThread():
     unique = 456
     amp1 = 50
@@ -79,6 +78,27 @@ def dataThread():
         socketio.emit('update_{}'.format(unique),[val1,val2],broadcast =True)
         print('sending')
         time.sleep(0.02)
+
+'''
+def dataThread():
+    unique = 456
+    amp1 = 50
+    amp2 = 12
+    omega1 = 10
+    omega2 = 30
+    set1 = []
+    set2 =[]
+    burst_duration = 10
+    counter = 0
+    while True:
+        set1.append(amp1*math.sin(omega1*time.time()))
+        set2.append(amp2*math.sin(omega2*time.time()))
+        if counter%burst_duration == 0:
+            socketio.emit('update_{}'.format(unique),[set1,set2],broadcast =True)
+            print('sending')
+        time.sleep(0.01)
+'''
+
 
 @app.route('/')
 def index():
