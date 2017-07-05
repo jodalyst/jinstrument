@@ -5,6 +5,18 @@ from threading import Thread, Lock
 
 #dictionary of async objects:
 
+'''
+at beginning/creation, a dictionary (maybe) of all potential threading objects
+will be created to house the thread functions, etc...
+
+i
+'''
+
+
+'''
+https://stackoverflow.com/questions/15729498/how-to-start-and-stop-thread
+'''
+
 bproc = {}
 
 #will contain:
@@ -18,9 +30,10 @@ def runner1():
 #example Flask usage:
 
 
-
-@app.route('/test_spot')
-def index():
+#all hardware threading will be handled through one high-level socket router.
+@app.route('/thread_command')
+def index(comm_val):
+    
     global threads #give access to threads dictionary
     if threads['runner1'] is None:
         threads['runner1'] = Thread(target=runner1)
