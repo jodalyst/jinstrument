@@ -70,14 +70,14 @@ def dataThread():
     unique = 456
     amp1 = 50
     amp2 = 12
-    omega1 = 10
-    omega2 = 30
+    omega1 = 5
+    omega2 = 8
     while True:
         val1 = amp1*math.sin(omega1*time.time())
         val2 = amp2*math.sin(omega2*time.time())
-        socketio.emit('update_{}'.format(unique),r'''<div style="width:{}px;background-color:#{:06X}"></div>'''.format(int(3*val2),int(8*val1)),broadcast =True)
+        socketio.emit('update_{}'.format(unique),r'''<div style="width:{}px;background-color:#{:06X}">HI</div>'''.format(int(3*val2),int(80*val1)),broadcast =True)
         print('sending')
-        time.sleep(0.02)
+        time.sleep(2.0)
 
 @app.route('/')
 def index():
