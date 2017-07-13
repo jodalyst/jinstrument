@@ -75,7 +75,7 @@ def dataThread():
     while True:
         val1 = amp1*math.sin(omega1*time.time())
         val2 = amp2*math.sin(omega2*time.time())
-        socketio.emit('update_{}'.format(unique),[val1,val2],broadcast =True)
+        socketio.emit('update_{}'.format(unique),r'''<div style="width:{}px;background-color:#{:06X}"></div>'''.format(int(3*val2),int(8*val1)),broadcast =True)
         print('sending')
         time.sleep(0.02)
 
@@ -87,7 +87,7 @@ def index():
         thread = Thread(target=dataThread)
         thread.daemon = True
         thread.start()
-    return render_template('time_series_example.html')
+    return render_template('div_render.example.html')
 
 
 if __name__ == '__main__':
