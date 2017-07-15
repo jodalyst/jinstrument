@@ -77,7 +77,7 @@ def dataThread():
         val2 = amp2*math.sin(omega2*time.time())
         socketio.emit('update_{}'.format(unique),r'''<div style="width:{}px;background-color:#{:06X}">HI</div>'''.format(int(3*val2),int(80*val1)),broadcast =True)
         print('sending')
-        time.sleep(2.0)
+        time.sleep(0.1)
 
 @app.route('/')
 def index():
