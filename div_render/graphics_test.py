@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 from bokeh.plotting import figure, show, output_file, ColumnDataSource
 from bokeh.models import HoverTool
+from bokeh.resources import CDN
 from bokeh.embed import components
 import bokeh
 import random
@@ -163,17 +164,12 @@ thread = None
 
 def dataThread():
     unique = 456
-    ports = serial_ports() #generate list of currently connected serial ports 
-    print (ports)
-    ser = ports[1]
-    s = serial.Serial(ser)
-    print(s)
     print("ALL GOOD")
     count = 0
     while True:
        # prepare some data
-        x = [1, count, 3, 4, 5]
-        y = [6, 7, 2, 4, 5]
+        x = [1, 2, 3, 4, 5]
+        y = [6, count, 2, 4, 5]
         count +=1 
         # output to static HTML file
         #output_file("lines.html", title="line plot example")
@@ -183,8 +179,8 @@ def dataThread():
         
         # add a line renderer with legend and line thickness
         p.line(x, y, legend="Temp.", line_width=2) 
-        script, div = components(p)
-        prep = script + div
+        script, div = components(p,CDN)
+        prep = div+script
 
         #val1 = amp1*math.sin(omega1*time.time())
         #val2 = amp2*math.sin(omega2*time.time())
