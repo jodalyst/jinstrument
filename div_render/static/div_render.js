@@ -17,8 +17,18 @@ function Div_Render(div_id,title,width,height,unique, socket=null){
     //document.getElementById(div_id).append("<div id=\""+div_id+unique+"_overall\"></div>");
     if (socket != null){
         socket.on("update_"+unique,function(value){
-        document.getElementById(div_id+unique+"_overall").innerHTML = value;
+        div2.innerHTML = value;
+        evalScriptInHTML(div2);
         });
+
+    }
+};
+
+function evalScriptInHTML(div) {
+    var scripts = div.getElementsByTagName("script");
+    for (var i = 0; i < scripts.length; ++i) {
+        var script = scripts[i];
+        eval(script.innerHTML);
     }
 };
 
