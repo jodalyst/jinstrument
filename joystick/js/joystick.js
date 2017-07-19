@@ -14,7 +14,6 @@ function joystick(unique,container_width,container_height){
     container    : document.getElementById('jstick_container_' + unique),
     mouseSupport    : true,
     });
-
     // joystick._baseEl.style.display = "none";
     joystick.addEventListener('touchStart', function(){
         console.log('down')
@@ -71,4 +70,4 @@ function joystick(unique,container_width,container_height){
     x = joystick.deltaX();
     y = joystick.deltaY();
     }, 1/30 * 1000);
-}
+};
