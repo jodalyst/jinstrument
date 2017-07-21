@@ -197,7 +197,7 @@ def index():
         thread = Thread(target=dataThread)
         thread.daemon = True
         thread.start()
-    return render_template('div_render.example_1.html')
+    return render_template('interface_dev/div_render.example_1.html')
 
 
 if __name__ == '__main__':
