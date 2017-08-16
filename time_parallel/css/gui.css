@@ -97,7 +97,7 @@ svg {
 .grid path {
       stroke-width: 0;
 }
-.scaler {
+.scalerp {
     margin: 3px;
     font-size: 10px;
     padding:0px;
@@ -145,20 +145,20 @@ svg {
 
 
 
-.scaler:active{
+.scalerp:active{
     background-color:#00ff1e;
     -moz-box-shadow:    inset 0px -5px 10px #207e2b;
     -webkit-box-shadow: inset 0px -5px 10px #207e2b;
     box-shadow:         inset 0px -5px 10px #207e2b;
 }
 
-.scaler:hover{
+.scalerp:hover{
     background-color:#dfdfdf;
     -moz-box-shadow:    inset 0px -5px 10px #c5c5c5;
     -webkit-box-shadow: inset 0px -5px 10px #c5c5c5;
     box-shadow:         inset 0px -5px 10px #c5c5c5;
 }
-.scaler:focus{
+.scalerp:focus{
     outline: 0;
 }
 

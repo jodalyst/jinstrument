@@ -12,9 +12,9 @@ function Div_Render(div_id,title,width,height,unique, socket=null){
     div1.className = "plot_title"
     div1.id = div_id+unique+"_title";
     div1.innerHTML = title;
-    document.getElementById(div_id).appendChild(div1); 
+    document.getElementById(div_id).appendChild(div1);
     div2.id = div_id+unique+"_overall";
-    document.getElementById(div_id).appendChild(div2); 
+    document.getElementById(div_id).appendChild(div2);
     if (socket != null){
         socket.on("update_"+unique,function(value){
         div2.innerHTML = value;
@@ -30,4 +30,3 @@ function evalScriptInHTML(div) {
         eval(script.innerHTML);
     }
 };
-

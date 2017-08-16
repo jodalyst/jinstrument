@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>NippleJS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5">
+        <script src="../dist/d3.min.js"></script>
+        <script src="../dist/nipplejs.js"></script>
+        <style>
+        html, body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        #container{
+          width:100%;
+          height:100%;
+        }
+        </style>
+    </head>
+    <body>
+        <div id = "container"></div>
+
+        <script>
+
+        var js1 = build_joystick('js1','static',"white","red","200");
+        var js2 = build_joystick('js2','static',"white","blue","200");
+        var js3 = build_joystick('js3','static',"white","green","200");
+        var js4 = build_joystick('js4','static',"white","yellow","200");
+        function build_joystick(div_id,mode,background,color,size){
+          d3.select("#container").append("div").attr("id",div_id).style("position","relative").style("height","50%").style("width","50%").style("background",background).style("border","dotted").style("margin","auto");
+          var new_joystick = nipplejs.create({
+              zone: document.getElementById(div_id),
+              mode: mode,
+              position: { left: '50%', top: '50%' },
+              color: color,
+              size: size
+              });
+            }
+        </script>
+    </body>
+</html>

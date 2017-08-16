@@ -33,12 +33,12 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
           .attr("class","v_button_container")
           .attr("id","plotbox"+unique+"BC2")
   //add buttons
-  this.button_container1.append("button").attr("class","scaler").attr("id",unique+"OI").html("O+");
-  this.button_container1.append("button").attr("class","scaler").attr("id",unique+"OD").html("O-");
+  this.button_container1.append("button").attr("class","scalerp").attr("id",unique+"OI").html("O+");
+  this.button_container1.append("button").attr("class","scalerp").attr("id",unique+"OD").html("O-");
 
-  this.button_container2.append("button").attr("class","scaler").attr("id",unique+"VP").html("Z+");
-  this.button_container2.append("button").attr("class","scaler").attr("id",unique+"VRS").html("RS");
-  this.button_container2.append("button").attr("class","scaler").attr("id",unique+"VM").html("Z-");
+  this.button_container2.append("button").attr("class","scalerp").attr("id",unique+"VP").html("Z+");
+  this.button_container2.append("button").attr("class","scalerp").attr("id",unique+"VRS").html("RS");
+  this.button_container2.append("button").attr("class","scalerp").attr("id",unique+"VM").html("Z-");
   function build_plot(){
     //create x axis scale
     var xScale = d3.scale.linear().domain([margin.left,plot_width]).range([margin.left,plot_width]);

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bar Chart</title>
+    <title>Parallel Plots</title>
     <link rel="stylesheet" href="./css/gui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> <!--jquery-->
 
@@ -15,10 +15,15 @@
   <body>
     <p>This is an example of a time parallel plot using the coordinates of your mouse</p>
     <script type="text/javascript" src="./js/parallel2.js"></script>
+    <script type="text/javascript" src="./js/line_parallel.js"></script>
+    <script type="text/javascript" src="./js/bar_parallel.js"></script>
     <div>
       <div class = "plot_title">Mouse Cursor Graph</div>
-      <div id = "plotbox"></div>
+      <div id = "line_ex"></div>
+      <div id="bar_ex"></div>
     </div>
+
+
     <script>
       var mouseX, mouseY;
       $(document).mousemove(function(e){
@@ -31,16 +36,12 @@
       var PLOT_HEIGHT = 200;
       var PLOT_WIDTH = 300;
       var TYPE = "line";
-      var plot = new Parallel_Plot(3,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","4",TYPE);
-      var plot2 = new Parallel_Plot(2,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","6","bar");
-      var plot3 = new Parallel_Plot(4,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","7",TYPE);
-      var plot4 = new Parallel_Plot(4,LABELS,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","8","bar");
+      var plot = new Line_Parallel_Plot("line_ex","Line Parallel Example",4,PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","7");
+      var plot2 = new Bar_Parallel_Plot("bar_ex","Bar Parallel Example",2,["X","Y"],PLOT_WIDTH,PLOT_HEIGHT,MAX,MIN,"black","unique");
       var state = 0;
       timer = setInterval(function(){
-        plot.step([mouseX,mouseY,mouseX]);
-        plot2.step([mouseX,mouseY]);
-        plot3.step([mouseX,mouseY,mouseX,mouseY]);
-        plot4.step([mouseX,mouseY,mouseX,mouseY]);
+        plot2.step_p([mouseX,mouseY]);
+        plot.step_p([mouseX,mouseY,mouseX,mouseY]);
       }, 10);
     </script>
   </body>
